@@ -5,8 +5,8 @@
 * Author: Leo Toikka & Antti Kymén
 * Description: Fetches tabs and chords from Ultimate Guitar
 * Author URI: https://github.com/l3ku
-* Version: 1.0
-* Text Domain: ultimate-guitar-tabs-chords
+* Version: 1.0.0
+* Text Domain: ug-tabs-chords
 * License: GPLv3
 *
 *
@@ -24,3 +24,53 @@
 *   along with this program; if not, write to the Free Software
 *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
+require_once( plugin_dir_path( __FILE__ ) . '/vendor/autoload.php' );
+
+if ( ! class_exists( 'UGTabsChords' ) ) {
+  class UGTabsChords {
+
+    /* This class is used as a singleton. */
+    private static $instance_;
+
+    /* Text-domain name */
+    private static $textDomain_ = 'ug-tabs-chords';
+
+    /**
+    * Initialize the plugin.
+    *
+    * @since 1.0.0
+    */
+    public function __construct() {
+      // Allow only one instance to exist at a time
+      if ( isset( self::$instance_ ) ) {
+        return;
+      }
+      self::$instance_ = $this;
+
+      add_action( 'plugins_loaded', array( $this, 'loadTextdomain' ) );
+    }
+
+    /**
+    * Load plugin textdomain.
+    *
+    * @since 1.0.0
+    */
+    public function loadTextdomain() {
+      load_plugin_textdomain( self::$textDomain_, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+    }
+
+    /**
+    * Load plugin modules
+    *
+    * @since 1.0.0
+    */
+    public function loadModules() {
+      // @TODO
+    }
+
+  }
+
+$ugtabschords = new UGTabsChords();
+
+}

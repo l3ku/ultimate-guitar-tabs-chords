@@ -1,2 +1,8 @@
 # Ultimate Guitar Tabs & Chords
+[![Latest Stable Version](https://poser.pugx.org/l3ku/ultimate-guitar-tabs-chords/v/stable)](https://packagist.org/packages/l3ku/ultimate-guitar-tabs-chords)
+[![Total Downloads](https://poser.pugx.org/l3ku/ultimate-guitar-tabs-chords/downloads)](https://packagist.org/packages/l3ku/ultimate-guitar-tabs-chords)
+[![Latest Unstable Version](https://poser.pugx.org/l3ku/ultimate-guitar-tabs-chords/v/unstable)](https://packagist.org/packages/l3ku/ultimate-guitar-tabs-chords)
+[![License](https://poser.pugx.org/l3ku/ultimate-guitar-tabs-chords/license)](https://packagist.org/packages/l3ku/ultimate-guitar-tabs-chords)
+[![composer.lock](https://poser.pugx.org/l3ku/ultimate-guitar-tabs-chords/composerlock)](https://packagist.org/packages/l3ku/ultimate-guitar-tabs-chords)
+
 A WordPress plugin that fetches tabs and chords from Ultimate Guitar.

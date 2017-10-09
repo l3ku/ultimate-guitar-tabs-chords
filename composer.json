@@ -1,0 +1,20 @@
+{
+    "name": "l3ku/ultimate-guitar-tabs-chords",
+    "description": "A WordPress plugin that fetches tabs and chords from Ultimate Guitar",
+    "type": "wordpress-plugin",
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "Leo Toikka",
+            "email": "leo.toikka@student.tut.fi"
+        },
+        {
+          "name": "Antti Kymén",
+          "email": "antti.kymen@seravo.fi"
+        }
+    ],
+    "keywords": [
+      "wordpress", "wp", "tabs", "chords", "ultimate-guitar"
+    ],
+    "require": {}
+}

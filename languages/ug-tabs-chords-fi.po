@@ -1,0 +1,37 @@
+# Copyright (C) 2017 Ultimate Guitar Tabs & Chords
+# This file is distributed under the same license as the Ultimate Guitar Tabs & Chords package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Ultimate Guitar Tabs & Chords 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Ultimate-Guitar-Tabs-"
+"Chords\n"
+"POT-Creation-Date: 2017-10-09 21:37+0300\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-10-09 22:18+0300\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.0.4\n"
+"Last-Translator: Leo Toikka <leo@seravo.fi>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: fi\n"
+
+#. Plugin Name of the plugin/theme
+msgid "Ultimate Guitar Tabs & Chords"
+msgstr "Ultimate Guitar Tabulatuurit & Soinnut"
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/l3ku/ultimate-guitar-tabs-chords"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Fetches tabs and chords from Ultimate Guitar"
+msgstr "Hae tabulatuurit ja soinnut kätevästi suoraan Ultimate Guitar -palvelusta"
+
+#. Author of the plugin/theme
+msgid "Leo Toikka & Antti Kymén"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://github.com/l3ku"
+msgstr ""

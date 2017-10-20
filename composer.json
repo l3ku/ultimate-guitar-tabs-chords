@@ -16,5 +16,11 @@
     "keywords": [
       "wordpress", "wp", "tabs", "chords", "ultimate-guitar"
     ],
-    "require": {}
+    "require": { 
+      "php": ">=5.3.2", 
+      "sunra/php-simple-html-dom-parser": ">=1.5.2"
+    },
+    "autoload": {
+        "psr-0": { "Sunra\\PhpSimple": "vendor/sunra/php-simple-html-dom-parser/Src/Sunra/PhpSimple/" }
+}
 }

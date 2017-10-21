@@ -28,6 +28,15 @@ require_once( plugin_dir_path( __FILE__ ) . '/includes/ug-client.php' );
 require_once( plugin_dir_path( __FILE__ ) . '/vendor/autoload.php' );
 
 if ( ! class_exists( 'UGTabsChords' ) ) {
+
+  /**
+   * Class UGTabsChords
+   *
+   * @package ug-tabs-chords
+   * @version  1.0.0
+    * @since 1.0.0
+    * @author Leo Toikka
+   */
   class UGTabsChords {
 
     /* This class is used as a singleton. */

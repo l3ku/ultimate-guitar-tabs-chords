@@ -77,8 +77,6 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     */
     public function loadModules() {
       $ug_client = new UGTabsChords\UGClient();
-
-      $ug_client->search( 'dream theater');
     }
 
   }

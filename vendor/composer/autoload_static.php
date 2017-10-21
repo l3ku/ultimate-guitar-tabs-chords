@@ -6,16 +6,16 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitd158715cd76726fed3d6744f44288b03
 {
+    public static $files = array (
+        'a9e0aee6c7258071f561c13af323e0bd' => __DIR__ . '/..' . '/sunra/php-simple-html-dom-parser/Src/Sunra/PhpSimple/simplehtmldom_1_5/simple_html_dom.php',
+    );
+
     public static $prefixesPsr0 = array (
         'S' => 
         array (
             'Sunra\\PhpSimple\\HtmlDomParser' => 
             array (
                 0 => __DIR__ . '/..' . '/sunra/php-simple-html-dom-parser/Src',
-            ),
-            'Sunra\\PhpSimple' => 
-            array (
-                0 => __DIR__ . '/..' . '/sunra/php-simple-html-dom-parser/Src/Sunra/PhpSimple',
             ),
         ),
     );

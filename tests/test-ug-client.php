@@ -13,7 +13,7 @@ class TestUGClient extends WP_UnitTestCase {
   * Init test case.
   */
   public function testUGClientInit() {
-   $ug_client = new UGTabsChords\UGClient();
+   $ug_client = new UGClient();
    return $ug_client;
   }
 

@@ -4,23 +4,23 @@
 *
 * @package ug-tabs-chords
 */
-namespace UGTabsChords;
+
+defined( 'ABSPATH' ) or die( 'Access Denied!' );
 
 require_once( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' );
 
-use \simplehtmldom_1_5\simple_html_dom as HtmlDom;
-use \WP_Error;
+use simplehtmldom_1_5\simple_html_dom as HtmlDom;
 
 if ( ! class_exists( 'UGClient' ) ) {
 
-/**
- * Class UGClient
- *
- * @package ug-tabs-chords
- * @version  1.0.0
+  /**
+  * Class UGClient
+  *
+  * @package ug-tabs-chords
+  * @version  1.0.0
   * @since 1.0.0
   * @author Leo Toikka
- */
+  */
   class UGClient {
 
     /* Basic search URL for Ultimate Guitar */
@@ -28,15 +28,19 @@ if ( ! class_exists( 'UGClient' ) ) {
 
     /* Type 1 value, describes whether to search for chords (200) or tabs (300) */
     private $type_1;
+    private $possible_type_1_values;
 
     /* Type 2 value, describes whether to search for full songs or (40000) or other */
     private $type_2;
+    private $possible_type_2_values;
 
     /* Tab/Chord ratings values to retreive */
     private $ratings;
+    private $possible_rating_values;
 
     /* The order in which to retreive the results */
     private $order;
+    private $possible_order_values;
 
     /**
     * Initialize the class.
@@ -44,6 +48,29 @@ if ( ! class_exists( 'UGClient' ) ) {
     * @since 1.0.0
     */
     public function __construct() {
+      $this->possible_type_1_values = array(
+        100 => __( 'Video', 'ug-tabs-chords' ),
+        200 => __( 'Tab', 'ug-tabs-chords' ),
+        300 => __( 'Chords', 'ug-tabs-chords' ),
+        400 => __( 'Bass', 'ug-tabs-chords' ),
+        500 => __( 'Guitar Pro', 'ug-tabs-chords' ),
+        600 => __( 'Power', 'ug-tabs-chords' ),
+        700 => __( 'Drums', 'ug-tabs-chords' ),
+        800 => __( 'Ukulele', 'ug-tabs-chords' ),
+        900 => __( 'Official', 'ug-tabs-chords' )
+      );
+      $this->possible_type_2_values = array(
+        10000 => __( 'Album', 'ug-tabs-chords' ),
+        20000 => __( 'Intro', 'ug-tabs-chords' ),
+        30000 => __( 'Solo', 'ug-tabs-chords' ),
+        40000 => __( 'Whole song', 'ug-tabs-chords' )
+      );
+      $this->possible_rating_values = array( 1, 2, 3, 4, 5 );
+      $this->possible_order_values = array(
+        'title_srt' => __( 'Title ABC', 'ug-tabs-chords' ),
+        'myweight' => __( 'Relevance', 'ug-tabs-chords' )
+      );
+
       // Set defaults
       $this->query_string_ug_search_url = 'https://www.ultimate-guitar.com/search.php?';
       $this->setDefaultParams();
@@ -77,8 +104,7 @@ if ( ! class_exists( 'UGClient' ) ) {
     * @return mixed True if the operation succeeded, or WP_ERROR object.
     */
     public function setType1( $type_1 ) {
-      $possible_values = array( 100, 200, 300, 400, 500, 600, 700, 800, 900 );
-      if ( array_intersect( $type_1, $possible_values ) != $type_1 ) {
+      if ( array_intersect( $type_1, array_keys( $this->possible_type_1_values ) ) != $type_1 ) {
         return new WP_Error( 'invalid_type_1_value', __( 'Invalid value supplied for type 1 search parameter', 'ug-tabs-chords' ) );
       }
       $this->type_1 = $type_1;
@@ -95,6 +121,15 @@ if ( ! class_exists( 'UGClient' ) ) {
     }
 
     /**
+    * Get the possible type 1 values for search results.
+    *
+    * @return array (int) The possible type 1 values for search results
+    */
+    public function getPossibleType1Values() {
+      return $this->possible_type_1_values;
+    }
+
+    /**
     * Set the type 2 for search results.
     *
     * @param array $type2 The type 2 values (int) to set.
@@ -106,8 +141,7 @@ if ( ! class_exists( 'UGClient' ) ) {
     * @return mixed True if the operation succeeded, or WP_ERROR object.
     */
     public function setType2( $type_2 ) {
-      $possible_values = array( 10000, 20000, 30000, 40000 );
-      if ( array_intersect( $type_2, $possible_values ) != $type_2 ) {
+      if ( array_intersect( $type_2, array_keys( $this->possible_type_2_values ) ) != $type_2 ) {
         return new WP_Error( 'invalid_type_2_value', __( 'Invalid value supplied for type 2 search parameter', 'ug-tabs-chords' ) );
       }
       $this->type_2 = $type_2;
@@ -124,6 +158,15 @@ if ( ! class_exists( 'UGClient' ) ) {
     }
 
     /**
+    * Get the possible type 2 values for search results.
+    *
+    * @return array (int) The possible type 2 values for search results
+    */
+    public function getPossibleType2Values() {
+      return $this->possible_type_2_values;
+    }
+
+    /**
     * Set the order for the retreived search results.
     *
     * @param string $order The order to set.
@@ -133,8 +176,7 @@ if ( ! class_exists( 'UGClient' ) ) {
     * @return mixed True if the operation succeeded, or WP_ERROR object.
     */
     public function setOrder( $order ) {
-      $possible_values = array( 'title_srt', 'myweight' );
-      if ( ! in_array( $order, $possible_values ) ) {
+      if ( ! in_array( $order, array_keys( $this->possible_order_values ) ) ) {
         return new WP_Error( 'invalid_order_value', __( 'Invalid value supplied for order search parameter', 'ug-tabs-chords' ) );
       }
       $this->order = $order;
@@ -151,14 +193,22 @@ if ( ! class_exists( 'UGClient' ) ) {
     }
 
     /**
+    * Get the possible order values for search results.
+    *
+    * @return array (int) The possible order values for search results
+    */
+    public function getPossibleOrderValues() {
+      return $this->possible_order_values;
+    }
+
+    /**
     * Set the allowed ratings for the search.
     *
     * @param array $ratings The rating values (1-5) to set.
     */
     public function setAllowedRatings( $ratings ) {
-      $possible_values = array( 1, 2, 3, 4, 5 );
-      if ( array_intersect( $ratings, $possible_values ) != $ratings ) {
-        return new \WP_Error( 'invalid_rating_value', __( 'Invalid value supplied for ratings search parameter', 'ug-tabs-chords' ) );
+      if ( array_intersect( $ratings, $this->possible_rating_values ) != $ratings ) {
+        return new WP_Error( 'invalid_rating_value', __( 'Invalid value supplied for ratings search parameter', 'ug-tabs-chords' ) );
       }
       $this->ratings = $ratings;
       return true;
@@ -171,6 +221,15 @@ if ( ! class_exists( 'UGClient' ) ) {
     */
     public function getAllowedRatings() {
       return $this->ratings;
+    }
+
+    /**
+    * Get the possible rating values for search results.
+    *
+    * @return array (int) The possible rating values for search results
+    */
+    public function getPossibleRatingValues() {
+      return $this->possible_rating_values;
     }
 
     /**
@@ -239,7 +298,7 @@ if ( ! class_exists( 'UGClient' ) ) {
 
     private function buildQueryString( $searchParams ) {
       $query_string = $this->query_string_ug_search_url;
-      $query_string .= \http_build_query( $searchParams );
+      $query_string .= http_build_query( $searchParams );
       return $query_string;
     }
   }

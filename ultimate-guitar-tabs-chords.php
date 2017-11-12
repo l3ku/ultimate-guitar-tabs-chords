@@ -62,6 +62,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
       $this->ug_client = new UGClient();
 
       add_action( 'plugins_loaded', array( $this, 'loadTextdomain' ) );
+      add_action( 'wp_enqueue_scripts', array( $this, 'enqueueScripts' ) );
       add_action( 'admin_init', array( $this, 'registerSettings' ) );
       add_action( 'admin_menu', array( $this, 'addAdminPages' ) );
       add_action( 'init', array( $this, 'registerShortcode' ) );
@@ -74,6 +75,16 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     */
     public function loadTextdomain() {
       load_plugin_textdomain( 'ug-tabs-chords', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+    }
+
+    /**
+    * Enqueue plugin scripts and styles.
+    *
+    * @since 1.0.0
+    */
+    public function enqueueScripts() {
+      // TODO: Add scripts if needed
+      wp_enqueue_style( 'ug-tabs-chords', plugins_url( '/assets/css/ug-tabs-chords.css', __FILE__ ) );
     }
 
     /**

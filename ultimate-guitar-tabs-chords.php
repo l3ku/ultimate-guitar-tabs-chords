@@ -104,11 +104,11 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
       );
       add_submenu_page(
         'ug_tabs_chords',
-        __( 'UGTC Settings', 'ug-tabs-chords' ),
-        __( 'Settings', 'ug-tabs-chords' ),
+        __( 'UGTC Search Settings', 'ug-tabs-chords' ),
+        __( 'Search Settings', 'ug-tabs-chords' ),
         'manage_options',
-        'ug_tabs_chords_settings',
-        array( $this, 'createSettingsPage' )
+        'ug_tabs_chords_search_settings',
+        array( $this, 'createSearchSettingsPage' )
       );
     }
 
@@ -126,8 +126,8 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     *
     * @since 1.0.0
     */
-    public function createSettingsPage() {
-      require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/settings-page.php' );
+    public function createSearchSettingsPage() {
+      require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/search-settings-page.php' );
     }
 
     /**
@@ -136,27 +136,25 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     * @since 1.0.0
     */
     public function registerSettings() {
-      register_setting( 'ugtc-settings-group', 'ugtc_artist_list' );
-      register_setting( 'ugtc-settings-group', 'ugtc_search_entry_types' );
-      register_setting( 'ugtc-settings-group', 'ugtc_search_entry_lengths' );
-      register_setting( 'ugtc-settings-group', 'ugtc_search_sort_option' );
-      register_setting( 'ugtc-settings-group', 'ugtc_search_ratings' );
+      register_setting( 'ugtc-search-settings-group', 'ugtc_search_entry_types' );
+      register_setting( 'ugtc-search-settings-group', 'ugtc_search_entry_lengths' );
+      register_setting( 'ugtc-search-settings-group', 'ugtc_search_sort_option' );
+      register_setting( 'ugtc-search-settings-group', 'ugtc_search_ratings' );
 
-      add_settings_section( 'ugtc-settings-section', __( 'General Settings', 'ug-tabs-chords' ), array( $this, 'settingsDescription' ), 'ug_tabs_chords_settings' );
-      add_settings_field( 'artist-list', __( 'Artists', 'ug-tabs-chords' ), array( $this, 'settingsArtistList' ), 'ug_tabs_chords_settings', 'ugtc-settings-section' );
-      add_settings_field( 'search-entry-types', __( 'Entry Types', 'ug-tabs-chords' ), array( $this, 'settingsSearchEntryTypes' ), 'ug_tabs_chords_settings', 'ugtc-settings-section' );
-      add_settings_field( 'search-entry-lengths', __( 'Entry Lengths', 'ug-tabs-chords' ), array( $this, 'settingsSearchEntryLengths' ), 'ug_tabs_chords_settings', 'ugtc-settings-section' );
-      add_settings_field( 'search-sort-option', __( 'Sorting Method', 'ug-tabs-chords' ), array( $this, 'settingsSearchSortOption' ), 'ug_tabs_chords_settings', 'ugtc-settings-section' );
-      add_settings_field( 'search-ratings', __( 'Allowed Ratings', 'ug-tabs-chords' ), array( $this, 'settingsSearchRatings' ), 'ug_tabs_chords_settings', 'ugtc-settings-section' );
+      add_settings_section( 'ugtc-search-settings-section', __( 'Search Settings', 'ug-tabs-chords' ), array( $this, 'searchSettingsDescription' ), 'ug_tabs_chords_search_settings' );
+      add_settings_field( 'search-entry-types', __( 'Entry Types', 'ug-tabs-chords' ), array( $this, 'settingsSearchEntryTypes' ), 'ug_tabs_chords_search_settings', 'ugtc-search-settings-section' );
+      add_settings_field( 'search-entry-lengths', __( 'Entry Lengths', 'ug-tabs-chords' ), array( $this, 'settingsSearchEntryLengths' ), 'ug_tabs_chords_search_settings', 'ugtc-search-settings-section' );
+      add_settings_field( 'search-sort-option', __( 'Sorting Method', 'ug-tabs-chords' ), array( $this, 'settingsSearchSortOption' ), 'ug_tabs_chords_search_settings', 'ugtc-search-settings-section' );
+      add_settings_field( 'search-ratings', __( 'Allowed Ratings', 'ug-tabs-chords' ), array( $this, 'settingsSearchRatings' ), 'ug_tabs_chords_search_settings', 'ugtc-search-settings-section' );
     }
 
     /**
-    * Add a description for the settings page.
+    * Add a description for the search settings page.
     *
     * @since 1.0.0
     */
-    public function settingsDescription() {
-      echo '<p>' . __( 'Change the general settings for Ultimate Guitar Tabs & Chords.', 'ug-tabs-chords' ) . '</p>';
+    public function searchSettingsDescription() {
+      echo '<p>' . __( 'Change the content search settings for Ultimate Guitar Tabs & Chords.', 'ug-tabs-chords' ) . '</p>';
     }
 
     /**
@@ -173,9 +171,20 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
       <?php
     }
 
+    /**
+    * Create settings field for search entry types.
+    *
+    * @since 1.0.0
+    */
     public function settingsSearchEntryTypes() {
       $entry_types = get_option( 'ugtc_search_entry_types' );
       $possible_entry_types = $this->ug_client->getPossibleType1Values();
+
+      // Use defaults if settings are empty
+      if ( empty( $entry_types ) || false === $entry_types ) {
+        $entry_types = $this->ug_client->getType1();
+      }
+
       echo '<select name="ugtc_search_entry_types[]" multiple>';
       foreach ( $possible_entry_types as $key => $value ) {
         echo '<option value="' . $key . '" ';
@@ -187,9 +196,20 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
       echo '</select>';
     }
 
+    /**
+    * Create settings field for search entry lengths.
+    *
+    * @since 1.0.0
+    */
     public function settingsSearchEntryLengths() {
       $entry_lengths = get_option( 'ugtc_search_entry_lengths' );
       $possible_entry_lengths = $this->ug_client->getPossibleType2Values();
+
+      // Use defaults if settings are empty
+      if ( empty( $entry_lengths ) || false === $entry_lengths ) {
+        $entry_lengths = $this->ug_client->getType2();
+      }
+
       echo '<select name="ugtc_search_entry_lengths[]" multiple>';
       foreach ( $possible_entry_lengths as $key => $value ) {
         echo '<option value="' . $key . '" ';
@@ -201,9 +221,20 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
       echo '</select>';
     }
 
+    /**
+    * Create settings field for search sort option.
+    *
+    * @since 1.0.0
+    */
     public function settingsSearchSortOption() {
       $sort_option = get_option( 'ugtc_search_sort_option' );
       $possible_sort_options = $this->ug_client->getPossibleOrderValues();
+
+      // Use defaults if settings are empty
+      if ( empty( $sort_option ) || false === $sort_option ) {
+        $sort_option = $this->ug_client->getOrder();
+      }
+
       echo '<select name="ugtc_search_sort_option">';
       foreach ( $possible_sort_options as $key => $value ) {
         echo '<option value="' . $key . '" ';
@@ -215,9 +246,20 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
       echo '</select>';
     }
 
+    /**
+    * Create settings field for search ratings.
+    *
+    * @since 1.0.0
+    */
     public function settingsSearchRatings() {
       $ratings = get_option( 'ugtc_search_ratings' );
       $possible_ratings = $this->ug_client->getPossibleRatingValues();
+
+      // Use defaults if settings are empty
+      if ( empty( $ratings ) || false === $ratings ) {
+        $ratings = $this->ug_client->getAllowedRatings();
+      }
+
       echo '<select name="ugtc_search_ratings[]" multiple>';
       foreach ( $possible_ratings as $rating ) {
         echo '<option value="' . $rating . '" ';

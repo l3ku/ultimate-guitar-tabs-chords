@@ -242,23 +242,28 @@ if ( ! class_exists( 'UGClient' ) ) {
     public function search( $artist ) {
       $search_array = array(
         'band_name' =>     $artist,
-        'type'              =>     $this->type_1,
-        'order'            =>     $this->order,
-        'rating'           =>     $this->ratings,
-        'type2'           =>     $this->type_2
+        'type'      =>     $this->type_1,
+        'order'     =>     $this->order,
+        'rating'    =>     $this->ratings,
+        'type2'     =>     $this->type_2
       );
 
       return $this->performSearch( $search_array );
     }
 
     private function performSearch( $search_params ) {
-      $ug_return_data = array();
       // Construct query string based on search parameters
       $query_string = $this->buildQueryString( $search_params );
 
       $html = new HtmlDom();
-      $html->load_file( $query_string );
+      // Don't continue if the html dom caused an error
+      if ( @$html->load_file( $query_string ) === false ) {
+        // TODO: Notify user somehow
+        return array();
+      }
+
       $result_table = $html->find( 'table.tresults tbody tr' );
+      $ug_return_data = array();
 
       if ( ! empty( $result_table ) ) {
 
@@ -275,12 +280,13 @@ if ( ! class_exists( 'UGClient' ) ) {
           $single_entry_link = $single_entry_name_td->href;
           $single_entry_type = $result_row->last_child()->plaintext;
 
-          $single_entry_rating_td = $result_row->find( 'td.tresults--rating span.rating');
+          $single_entry_rating_td = $result_row->find( 'td.tresults--rating span.rating', 0 );
           // Ratings are 0 if they don't exist
           $single_entry_rating  = 0;
-          if ( ! empty($single_entry_rating_td ) && isset( $single_entry_rating_td->title ) ) {
+          if ( ! empty( $single_entry_rating_td ) && isset( $single_entry_rating_td->title ) ) {
             $single_entry_rating = $single_entry_rating_td->title;
           }
+
 
           $result_row_array = array(
             'name' => $single_entry_name,

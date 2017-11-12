@@ -28,6 +28,7 @@
 defined( 'ABSPATH' ) or die( 'Access Denied!' );
 
 require_once( plugin_dir_path( __FILE__ ) . 'includes/ug-client.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/ug-shortcode.php' );
 
 if ( ! class_exists( 'UGTabsChords' ) ) {
 
@@ -63,11 +64,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
       add_action( 'plugins_loaded', array( $this, 'loadTextdomain' ) );
       add_action( 'admin_init', array( $this, 'registerSettings' ) );
       add_action( 'admin_menu', array( $this, 'addAdminPages' ) );
-
-      add_action( 'init', function() {
-        add_shortcode( 'ug-tabs-chords', array( $this, 'createShortCode' ) );
-      } );
-
+      add_action( 'init', array( $this, 'registerShortcode' ) );
     }
 
     /**
@@ -222,56 +219,15 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     }
 
     /**
-    * Create plugin shortcode.
+    * Register plugin shortcode.
     *
     * @since 1.0.0
     */
-    function createShortCode( $atts = [], $content = null ) {
-      $search_entry_types = get_option( 'ugtc_search_entry_types' );
-      if ( ! empty( $search_entry_types ) ) {
-        $this->ug_client->setType1( $search_entry_types );
-      }
-
-      $search_entry_lengths = get_option( 'ugtc_search_entry_lengths' );
-      if ( ! empty( $search_entry_lengths ) ) {
-        $this->ug_client->setType2( $search_entry_lengths );
-      }
-
-      $search_sort_option = get_option( 'ugtc_search_sort_option' );
-      if ( ! empty( $search_sort_option ) ) {
-        $this->ug_client->setOrder( $search_sort_option );
-      }
-
-      $search_ratings = get_option( 'ugtc_search_ratings' );
-      if ( ! empty( $search_ratings ) ) {
-        $this->ug_client->setAllowedRatings( $search_ratings );
-      }
-
-      $artists = get_option( 'ugtc_artist_list' );
-      $results = $this->ug_client->search( $artists );
-
-      // Create a display div from artists' data
-      $artist_div = '<div class="ugtc-single-artist-entries">';
-      foreach ( $results as $result ) {
-        $single_entry_div = '<div class="ugtc-single-entry">';
-
-        // Get all the data for a single entry
-        $entry_name = '<div class="ugtc-single-entry-name"><a class="ugtc-single-entry-link" href="' . $result['link'] . '">' . $result['name'] . '</a></div>';
-
-        $entry_type = '<div class="ugtc-single-entry-type">' . $result['type'] . '</div>';
-        $entry_rating = '<div class="ugtc-single-entry-rating">' . str_repeat( '&#9733;', $result['rating'] ) . '</div>';
-
-        $single_entry_div .= $entry_name;
-        $single_entry_div .= $entry_type;
-        $single_entry_div .= $entry_rating;
-        $single_entry_div .= '</div>';
-
-        $artist_div .= $single_entry_div;
-      }
-      $artist_div .= '</div>';
-      return $artist_div;
+    public function registerShortcode() {
+      add_shortcode( 'ug-tabs-chords', function( $atts = [], $content = null ) {
+        echo createShortCode( $this->ug_client, $atts, $content );
+      } );
     }
-
   }
   $ugtabschords = new UGTabsChords();
 }

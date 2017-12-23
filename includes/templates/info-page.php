@@ -4,6 +4,9 @@
 *
 * @package ug-tabs-chords
 */
+
+defined( 'ABSPATH' ) or die( 'Access Denied!' );
+
 require_once( plugin_dir_path( __FILE__ ) . '../ug-shortcode.php' );
 
 // Generate shortcode on form submission, sanitize input and disallow HTML

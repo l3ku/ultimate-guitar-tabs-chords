@@ -4,6 +4,8 @@
 *
 * @package ug-tabs-chords
 */
+
+defined( 'ABSPATH' ) or die( 'Access Denied!' );
 ?>
 
 <div class="wrap">

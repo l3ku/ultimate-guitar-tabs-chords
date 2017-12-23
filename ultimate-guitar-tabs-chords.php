@@ -27,8 +27,8 @@
 
 defined( 'ABSPATH' ) or die( 'Access Denied!' );
 
-require_once( plugin_dir_path( __FILE__ ) . 'includes/ug-client.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/ug-shortcode.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/ug-settings.php' );
 
 if ( ! class_exists( 'UGTabsChords' ) ) {
 
@@ -42,11 +42,17 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
    */
   class UGTabsChords {
 
-    /* This class is used as a singleton. */
-    private static $instance_;
+    /**
+     * Settings handler for registering and providing functionality to settings.
+     * @var UGSettings
+     */
+    private $ug_settings;
 
-    /* Ultimate Guitar client */
-    private $ug_client;
+    /**
+     * Shortcode registration and functionality.
+     * @var UGShortCode
+     */
+    private $ug_shortcode;
 
     /**
     * Initialize the plugin.
@@ -54,18 +60,15 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     * @since 0.0.1
     */
     public function __construct() {
-      // Allow only one instance to exist at a time
-      if ( isset( self::$instance_ ) ) {
-        return;
-      }
-      self::$instance_ = $this;
-      $this->ug_client = new UGClient();
+      $this->ug_settings = new UGSettings();
+      $this->ug_shortcode = new UGShortCode();
 
       add_action( 'plugins_loaded', array( $this, 'loadTextdomain' ) );
-      add_action( 'wp_enqueue_scripts', array( $this, 'enqueueScripts' ) );
+      add_action( 'admin_enqueue_scripts', array( $this, 'enqueueScripts' ) );
       add_action( 'admin_init', array( $this, 'registerSettings' ) );
       add_action( 'admin_menu', array( $this, 'addAdminPages' ) );
       add_action( 'init', array( $this, 'registerShortcode' ) );
+      add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'addSettingsActionLink' ) );
     }
 
     /**
@@ -78,12 +81,51 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     }
 
     /**
+     * Register plugin settings.
+     *
+     * @since 0.0.1
+     */
+    public function registerSettings() {
+      $this->ug_settings->registerSettings();
+    }
+
+    /**
+    * Register plugin shortcode.
+    *
+    * @since 0.0.1
+    */
+    public function registerShortcode() {
+      $this->ug_shortcode->registerShortcode();
+    }
+
+    /**
+     * Add settings link to plugin page meta box.
+     *
+     * @param array $links Already existing links
+     * @return array Links including the added settings links
+     * @since 0.0.1
+     */
+    public function addSettingsActionLink( $links ) {
+      $admin_link = admin_url( 'admin.php?page=ug_tabs_chords' );
+
+      // Check if WordPress is a network installation
+      if ( is_network_admin() ) {
+        // TODO: Check that this actually works in WP Network Admin
+        $admin_link = network_admin_url( 'admin.php?page=ug_tabs_chords' );
+      }
+
+      $settings_link = array( '<a href="' . $admin_link . '"">' . __( 'Settings' ) . '</a>' );
+      $new_links = array_merge( $links, $settings_link );
+
+      return $new_links;
+    }
+
+    /**
     * Enqueue plugin scripts and styles.
     *
     * @since 0.0.1
     */
     public function enqueueScripts() {
-      // TODO: Add scripts if needed
       wp_enqueue_style( 'ug-tabs-chords', plugins_url( '/assets/css/ug-tabs-chords.css', __FILE__ ) );
     }
 
@@ -102,6 +144,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
         array( $this, 'createInfoPage' ),
         'dashicons-album'
       );
+
       add_submenu_page(
         'ug_tabs_chords',
         __( 'UGTC Search Settings', 'ug-tabs-chords' ),
@@ -129,158 +172,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     public function createSearchSettingsPage() {
       require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/search-settings-page.php' );
     }
-
-    /**
-    * Register plugin settings.
-    *
-    * @since 1.0.0
-    */
-    public function registerSettings() {
-      register_setting( 'ugtc-search-settings-group', 'ugtc_search_entry_types' );
-      register_setting( 'ugtc-search-settings-group', 'ugtc_search_entry_lengths' );
-      register_setting( 'ugtc-search-settings-group', 'ugtc_search_sort_option' );
-      register_setting( 'ugtc-search-settings-group', 'ugtc_search_ratings' );
-
-      add_settings_section( 'ugtc-search-settings-section', __( 'Search Settings', 'ug-tabs-chords' ), array( $this, 'searchSettingsDescription' ), 'ug_tabs_chords_search_settings' );
-      add_settings_field( 'search-entry-types', __( 'Entry Types', 'ug-tabs-chords' ), array( $this, 'settingsSearchEntryTypes' ), 'ug_tabs_chords_search_settings', 'ugtc-search-settings-section' );
-      add_settings_field( 'search-entry-lengths', __( 'Entry Lengths', 'ug-tabs-chords' ), array( $this, 'settingsSearchEntryLengths' ), 'ug_tabs_chords_search_settings', 'ugtc-search-settings-section' );
-      add_settings_field( 'search-sort-option', __( 'Sorting Method', 'ug-tabs-chords' ), array( $this, 'settingsSearchSortOption' ), 'ug_tabs_chords_search_settings', 'ugtc-search-settings-section' );
-      add_settings_field( 'search-ratings', __( 'Allowed Ratings', 'ug-tabs-chords' ), array( $this, 'settingsSearchRatings' ), 'ug_tabs_chords_search_settings', 'ugtc-search-settings-section' );
-    }
-
-    /**
-    * Add a description for the search settings page.
-    *
-    * @since 1.0.0
-    */
-    public function searchSettingsDescription() {
-      echo '<p>' . __( 'Change the content search settings for Ultimate Guitar Tabs & Chords.', 'ug-tabs-chords' ) . '</p>';
-    }
-
-    /**
-    * Create appearance for displaying the artist list setting.
-    *
-    * @since 1.0.0
-    */
-    public function settingsArtistList() {
-      $artists = get_option( 'ugtc_artist_list' );
-      ?>
-      <div class="ugtc-artist-list">
-        <input type="text" name="ugtc_artist_list" value="<?php if ( ! empty( $artists ) ): echo $artists; endif; ?>">
-      </div>
-      <?php
-    }
-
-    /**
-    * Create settings field for search entry types.
-    *
-    * @since 1.0.0
-    */
-    public function settingsSearchEntryTypes() {
-      $entry_types = get_option( 'ugtc_search_entry_types' );
-      $possible_entry_types = $this->ug_client->getPossibleType1Values();
-
-      // Use defaults if settings are empty
-      if ( empty( $entry_types ) || false === $entry_types ) {
-        $entry_types = $this->ug_client->getType1();
-      }
-
-      echo '<select name="ugtc_search_entry_types[]" multiple>';
-      foreach ( $possible_entry_types as $key => $value ) {
-        echo '<option value="' . $key . '" ';
-        if ( ! empty( $entry_types ) && in_array( $key, $entry_types ) ) {
-          echo 'selected';
-        }
-        echo '>' . $value . '</option>';
-      }
-      echo '</select>';
-    }
-
-    /**
-    * Create settings field for search entry lengths.
-    *
-    * @since 1.0.0
-    */
-    public function settingsSearchEntryLengths() {
-      $entry_lengths = get_option( 'ugtc_search_entry_lengths' );
-      $possible_entry_lengths = $this->ug_client->getPossibleType2Values();
-
-      // Use defaults if settings are empty
-      if ( empty( $entry_lengths ) || false === $entry_lengths ) {
-        $entry_lengths = $this->ug_client->getType2();
-      }
-
-      echo '<select name="ugtc_search_entry_lengths[]" multiple>';
-      foreach ( $possible_entry_lengths as $key => $value ) {
-        echo '<option value="' . $key . '" ';
-        if ( ! empty( $entry_lengths ) && in_array( $key, $entry_lengths ) ) {
-          echo 'selected';
-        }
-        echo '>' . $value . '</option>';
-      }
-      echo '</select>';
-    }
-
-    /**
-    * Create settings field for search sort option.
-    *
-    * @since 1.0.0
-    */
-    public function settingsSearchSortOption() {
-      $sort_option = get_option( 'ugtc_search_sort_option' );
-      $possible_sort_options = $this->ug_client->getPossibleOrderValues();
-
-      // Use defaults if settings are empty
-      if ( empty( $sort_option ) || false === $sort_option ) {
-        $sort_option = $this->ug_client->getOrder();
-      }
-
-      echo '<select name="ugtc_search_sort_option">';
-      foreach ( $possible_sort_options as $key => $value ) {
-        echo '<option value="' . $key . '" ';
-        if ( ! empty( $sort_option ) && $key === $sort_option ) {
-          echo 'selected';
-        }
-        echo '>' . $value . '</option>';
-      }
-      echo '</select>';
-    }
-
-    /**
-    * Create settings field for search ratings.
-    *
-    * @since 1.0.0
-    */
-    public function settingsSearchRatings() {
-      $ratings = get_option( 'ugtc_search_ratings' );
-      $possible_ratings = $this->ug_client->getPossibleRatingValues();
-
-      // Use defaults if settings are empty
-      if ( empty( $ratings ) || false === $ratings ) {
-        $ratings = $this->ug_client->getAllowedRatings();
-      }
-
-      echo '<select name="ugtc_search_ratings[]" multiple>';
-      foreach ( $possible_ratings as $rating ) {
-        echo '<option value="' . $rating . '" ';
-        if ( ! empty( $ratings ) && in_array( $rating, $ratings ) ) {
-          echo 'selected';
-        }
-        echo '>' . str_repeat( '&#9733;', $rating ) . '</option>';
-      }
-      echo '</select>';
-    }
-
-    /**
-    * Register plugin shortcode.
-    *
-    * @since 1.0.0
-    */
-    public function registerShortcode() {
-      add_shortcode( 'ug-tabs-chords', function( $atts = [], $content = null ) {
-        echo createShortCode( $this->ug_client, $atts, $content );
-      } );
-    }
   }
+
   $ugtabschords = new UGTabsChords();
 }

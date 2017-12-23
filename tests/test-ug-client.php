@@ -3,8 +3,8 @@
 * Class TestUGClient
 *
 * @package ug-tabs-chords
-* @version  1.0.0
-* @since 1.0.0
+* @version  0.0.1
+* @since 0.0.1
 * @author Leo Toikka
 */
 class TestUGClient extends WP_UnitTestCase {

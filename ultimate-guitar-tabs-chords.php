@@ -5,7 +5,7 @@
 * Author: Leo Toikka & Antti Kymén
 * Description: Fetches tabs and chords from Ultimate Guitar
 * Author URI: https://github.com/l3ku
-* Version: 1.0.0
+* Version: 0.0.1
 * Text Domain: ug-tabs-chords
 * License: GPLv3
 *
@@ -36,9 +36,9 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
    * Class UGTabsChords
    *
    * @package ug-tabs-chords
-   * @version  1.0.0
-    * @since 1.0.0
-    * @author Leo Toikka
+   * @version  0.0.1
+   * @since 0.0.1
+   * @author Leo Toikka
    */
   class UGTabsChords {
 
@@ -51,7 +51,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     /**
     * Initialize the plugin.
     *
-    * @since 1.0.0
+    * @since 0.0.1
     */
     public function __construct() {
       // Allow only one instance to exist at a time
@@ -71,7 +71,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     /**
     * Load plugin textdomain.
     *
-    * @since 1.0.0
+    * @since 0.0.1
     */
     public function loadTextdomain() {
       load_plugin_textdomain( 'ug-tabs-chords', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -80,7 +80,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     /**
     * Enqueue plugin scripts and styles.
     *
-    * @since 1.0.0
+    * @since 0.0.1
     */
     public function enqueueScripts() {
       // TODO: Add scripts if needed
@@ -91,7 +91,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     * Add a settings page to WP Admin under "Settings" if the current user
     * has manage options capabilitiess.
     *
-    * @since 1.0.0
+    * @since 0.0.1
     */
     public function addAdminPages() {
       add_menu_page(
@@ -115,7 +115,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     /**
     * Create the admin plugin info page.
     *
-    * @since 1.0.0
+    * @since 0.0.1
     */
     public function createInfoPage() {
       require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/info-page.php' );
@@ -124,7 +124,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     /**
     * Create the admin general settings page.
     *
-    * @since 1.0.0
+    * @since 0.0.1
     */
     public function createSearchSettingsPage() {
       require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/search-settings-page.php' );

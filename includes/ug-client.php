@@ -17,8 +17,8 @@ if ( ! class_exists( 'UGClient' ) ) {
   * Class UGClient
   *
   * @package ug-tabs-chords
-  * @version  1.0.0
-  * @since 1.0.0
+  * @version  0.0.1
+  * @since 0.0.1
   * @author Leo Toikka
   */
   class UGClient {
@@ -43,9 +43,10 @@ if ( ! class_exists( 'UGClient' ) ) {
     private $possible_order_values;
 
     /**
-    * Initialize the class.
+    * Initialize the class. Possible values for search parameters are also
+    * set here.
     *
-    * @since 1.0.0
+    * @since 0.0.1
     */
     public function __construct() {
       $this->possible_type_1_values = array(
@@ -108,6 +109,7 @@ if ( ! class_exists( 'UGClient' ) ) {
         return new WP_Error( 'invalid_type_1_value', __( 'Invalid value supplied for type 1 search parameter', 'ug-tabs-chords' ) );
       }
       $this->type_1 = $type_1;
+
       return true;
     }
 
@@ -145,6 +147,7 @@ if ( ! class_exists( 'UGClient' ) ) {
         return new WP_Error( 'invalid_type_2_value', __( 'Invalid value supplied for type 2 search parameter', 'ug-tabs-chords' ) );
       }
       $this->type_2 = $type_2;
+
       return true;
     }
 
@@ -180,6 +183,7 @@ if ( ! class_exists( 'UGClient' ) ) {
         return new WP_Error( 'invalid_order_value', __( 'Invalid value supplied for order search parameter', 'ug-tabs-chords' ) );
       }
       $this->order = $order;
+
       return true;
     }
 
@@ -211,6 +215,7 @@ if ( ! class_exists( 'UGClient' ) ) {
         return new WP_Error( 'invalid_rating_value', __( 'Invalid value supplied for ratings search parameter', 'ug-tabs-chords' ) );
       }
       $this->ratings = $ratings;
+
       return true;
     }
 
@@ -299,12 +304,14 @@ if ( ! class_exists( 'UGClient' ) ) {
           ++$index;
         }
       }
+      
       return $ug_return_data;
     }
 
     private function buildQueryString( $searchParams ) {
       $query_string = $this->query_string_ug_search_url;
       $query_string .= http_build_query( $searchParams );
+
       return $query_string;
     }
   }

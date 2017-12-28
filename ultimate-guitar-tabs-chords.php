@@ -50,7 +50,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
 
     /**
      * Shortcode registration and functionality.
-     * @var UGShortCode
+     * @var UGShortcode
      */
     private $ug_shortcode;
 
@@ -61,7 +61,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     */
     public function __construct() {
       $this->ug_settings = new UGSettings();
-      $this->ug_shortcode = new UGShortCode();
+      $this->ug_shortcode = new UGShortcode();
 
       add_action( 'plugins_loaded', array( $this, 'loadTextdomain' ) );
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueueScripts' ) );
@@ -141,7 +141,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
         __( 'UGTC', 'ug-tabs-chords' ),
         'manage_options',
         'ug_tabs_chords',
-        array( $this, 'createInfoPage' ),
+        array( $this, 'createMainPage' ),
         'dashicons-album'
       );
 
@@ -156,12 +156,12 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     }
 
     /**
-    * Create the admin plugin info page.
+    * Create the admin plugin main page.
     *
     * @since 0.0.1
     */
-    public function createInfoPage() {
-      require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/info-page.php' );
+    public function createMainPage() {
+      require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/main-page.php' );
     }
 
     /**

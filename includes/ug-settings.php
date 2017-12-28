@@ -88,21 +88,15 @@ if ( ! class_exists( 'UGSettings' ) ) {
     * @since 0.0.1
     */
     public function searchSettingsDescription() {
-      echo '<p>' . __( 'Change the content search settings for Ultimate Guitar Tabs & Chords. <br><small>Hint: press ctrl/cmd to select multiple values.</small>', 'ug-tabs-chords' ) . '</p>';
-    }
-
-    /**
-    * Create appearance for displaying the artist list setting.
-    *
-    * @since 0.0.1
-    */
-    public function settingsArtistList() {
-      $artists = get_option( 'ugtc_artist_list' );
-      ?>
-      <div class="ugtc-artist-list">
-        <input type="text" name="ugtc_artist_list" value="<?php if ( ! empty( $artists ) ) : echo $artists; endif; ?>">
-      </div>
-      <?php
+      echo wp_sprintf(
+        __(
+          '%sChange the content search settings for Ultimate Guitar Tabs & Chords. %sHint: press ctrl/cmd to select multiple values.%s',
+          'ug-tabs-chords'
+        ),
+        '<p>',
+        '<br><small>', 
+        '</small></p>'
+      );
     }
 
     /**

@@ -76,7 +76,13 @@ if ( ! class_exists( 'UGClient' ) ) {
       $this->query_string_ug_search_url = 'https://www.ultimate-guitar.com/search.php?';
       $this->setDefaultParams();
     }
-
+    /**
+     * Resets the current client search parameter values to the default ones:
+     * type_1: Tabs (200) & Chords (300)
+     * type_2: Whole Song (40000)
+     * ratings: 1-5
+     * order: relevancy
+     */
     public function setDefaultParams() {
       // Return both chords and tabs by default
       $this->type_1 = array( 200, 300 );
@@ -246,11 +252,11 @@ if ( ! class_exists( 'UGClient' ) ) {
     */
     public function search( $artist ) {
       $search_array = array(
-        'band_name' =>     $artist,
-        'type'      =>     $this->type_1,
-        'order'     =>     $this->order,
-        'rating'    =>     $this->ratings,
-        'type2'     =>     $this->type_2
+        'band_name'  =>     $artist,
+        'type'       =>     $this->type_1,
+        'order'      =>     $this->order,
+        'rating'     =>     $this->ratings,
+        'type2'      =>     $this->type_2
       );
 
       return $this->performSearch( $search_array );
@@ -260,10 +266,14 @@ if ( ! class_exists( 'UGClient' ) ) {
       // Construct query string based on search parameters
       $query_string = $this->buildQueryString( $search_params );
 
+      // Create HTML Dom and specify timeout limit to 15 seconds so the
+      // site may still function in case of some errors.
       $html = new HtmlDom();
+      set_time_limit(15);
+
       // Don't continue if the html dom caused an error
       if ( @$html->load_file( $query_string ) === false ) {
-        // TODO: Notify user somehow
+        error_log( sprintf( __( 'Ultimate-Guitar Tabs & Chords: could not establish connection to "%s"', 'ug-tabs-chords' ), $this->query_string_ug_search_url ) );
         return array();
       }
 
@@ -292,19 +302,18 @@ if ( ! class_exists( 'UGClient' ) ) {
             $single_entry_rating = $single_entry_rating_td->title;
           }
 
-
           $result_row_array = array(
-            'name' => $single_entry_name,
-            'type' => $single_entry_type,
-            'link' => $single_entry_link,
-            'rating' => $single_entry_rating
+            'name'    =>   $single_entry_name,
+            'type'    =>   $single_entry_type,
+            'link'    =>   $single_entry_link,
+            'rating'  =>   $single_entry_rating
           );
 
           $ug_return_data[$index] = $result_row_array;
           ++$index;
         }
       }
-      
+
       return $ug_return_data;
     }
 

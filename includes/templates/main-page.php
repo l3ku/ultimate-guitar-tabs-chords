@@ -27,7 +27,7 @@ if ( isset( $_POST['ugtc_shortcode_artist'] ) && isset( $_POST['ugtc_shortcode_l
   <?php if ( isset( $_POST['ugtc_purge_cache'] ) ) : ?>
     <?php UGCache::purgeCache(); ?>
     <div class="notice notice-success is-dismissible ugtc-success-msg">
-      <?php _e( 'Ultimate Guitar Tabs & Chords cache emptied successfully!', 'ug-tabs-chords' ); ?>
+      <?php _e( 'Cache emptied successfully!', 'ug-tabs-chords' ); ?>
     </div>
   <?php endif; ?>
 
@@ -39,6 +39,9 @@ if ( isset( $_POST['ugtc_shortcode_artist'] ) && isset( $_POST['ugtc_shortcode_l
     <?php _e( 'Shortcode Generator', 'ug-tabs-chords' ); ?>
   </h2>
   <div class="ugtc-shortcode-generator">
+    <p class="ugtc-instructions">
+      <?php _e( 'This plugin works via a shortcode, which is added to a page or post. Generate the shortcode by using the generator below:', 'ug-tabs-chords' ) ?>
+    </p>
     <form id="ugtc-shortcode-generator-form" class="ugtc-shortcode-generator-form" method="post" action="">
       <table class="form-table">
         <tr>
@@ -46,7 +49,7 @@ if ( isset( $_POST['ugtc_shortcode_artist'] ) && isset( $_POST['ugtc_shortcode_l
             <?php _e( 'Artist', 'ug-tabs-chords' ); ?>
           </th>
           <td>
-            <input type="text" name="ugtc_shortcode_artist" placeholder="Artist Name"
+            <input type="text" name="ugtc_shortcode_artist" placeholder="<?php _e( 'Artist Name', 'ug-tabs-chords' ); ?>"
             <?php if ( isset( $artist ) ) echo 'value="' . $artist . '"'; ?>>
           </td>
         </tr>
@@ -60,9 +63,9 @@ if ( isset( $_POST['ugtc_shortcode_artist'] ) && isset( $_POST['ugtc_shortcode_l
           </td>
         </tr>
         <tr>
-          <th scope="row">
+          <td>
             <input type="submit" class="button button-secondary" value="<?php _e( 'Generate Shortcode', 'ug-tabs-chords' ); ?>">
-          </th>
+          </td>
         </tr>
       </table>
       <div class="ugtc-shortcode-generator-shortcode">
@@ -86,7 +89,7 @@ if ( isset( $_POST['ugtc_shortcode_artist'] ) && isset( $_POST['ugtc_shortcode_l
     <?php _e( 'Cache', 'ug-tabs-chords' ); ?>
   </h2>
   <p class="ugtc-instructions">
-    <?php _e( 'Ultimate Guitar Tabs & Chords uses the transient API of WordPress to cache data, resulting in much faster loading times. This might cause delay for your modifications to become visible, so be sure to empty the cache after modifications: ' ); ?>
+    <?php _e( 'Ultimate Guitar Tabs & Chords uses the transient API of WordPress to cache data, resulting in much faster loading times. This might cause delay for your modifications to become visible, so be sure to empty the cache after modifications. ', 'ug-tabs-chords' ); ?>
   </p>
   <form id="ugtc-purge-cache-form" method="POST" action="">
     <input type="submit" name="ugtc_purge_cache" class="button button-secondary" value="<?php _e( 'Purge Cache', 'ug-tabs-chords' ); ?>">

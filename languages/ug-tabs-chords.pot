@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Ultimate Guitar Tabs & Chords 0.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ultimate-guitar-"
 "tabs-chords\n"
-"POT-Creation-Date: 2017-11-12 19:38:33+00:00\n"
+"POT-Creation-Date: 2017-12-30 19:19:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,170 +13,203 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
+#: includes/templates/main-page.php:30
+msgid "Cache emptied successfully!"
+msgstr ""
+
 #. #-#-#-#-#  ug-tabs-chords.pot (Ultimate Guitar Tabs & Chords 0.0.1)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
-#: includes/templates/info-page.php:8
+#: includes/templates/main-page.php:35
 msgid "Ultimate Guitar Tabs & Chords"
 msgstr ""
 
-#: includes/templates/info-page.php:10
-msgid "Thank you for choosing to use Ultimate Guitar Tabs & Chords."
+#: includes/templates/main-page.php:39
+msgid "Shortcode Generator"
 msgstr ""
 
-#: includes/templates/info-page.php:12
-msgid "Instructions"
-msgstr ""
-
-#: includes/templates/info-page.php:15
+#: includes/templates/main-page.php:43
 msgid ""
-"Specify your content search settings from <em>UGTC->Search Settings</em> (e."
-"g. whether to show tabs and/or chords and how to order them)"
+"This plugin works via a shortcode, which is added to a page or post. "
+"Generate the shortcode by using the generator below:"
 msgstr ""
 
-#: includes/templates/info-page.php:16
+#: includes/templates/main-page.php:49
+msgid "Artist"
+msgstr ""
+
+#: includes/templates/main-page.php:52
+msgid "Artist Name"
+msgstr ""
+
+#: includes/templates/main-page.php:58
+msgid "Limit results"
+msgstr ""
+
+#: includes/templates/main-page.php:67
+msgid "Generate Shortcode"
+msgstr ""
+
+#: includes/templates/main-page.php:74
+msgid "Your Shortcode: "
+msgstr ""
+
+#: includes/templates/main-page.php:89
+msgid "Cache"
+msgstr ""
+
+#: includes/templates/main-page.php:92
 msgid ""
-"Insert the shortcode <code>[ug-tabs-chords artist=\"YOUR ARTIST HERE\"]</"
-"code> to the desired page"
+"Ultimate Guitar Tabs & Chords uses the transient API of WordPress to cache "
+"data, resulting in much faster loading times. This might cause delay for "
+"your modifications to become visible, so be sure to empty the cache after "
+"modifications. "
 msgstr ""
 
-#: includes/templates/info-page.php:17
-msgid "Done!"
+#: includes/templates/main-page.php:95
+msgid "Purge Cache"
 msgstr ""
 
-#: includes/templates/info-page.php:20
-msgid "Development"
-msgstr ""
-
-#: includes/templates/info-page.php:22
-msgid ""
-"Ultimate Guitar Tabs & Chords is open source software, feel free to track "
-"and even participate in its development in GitHub. If you have any bug "
-"reports or other feedback, please open a GitHub issue."
-msgstr ""
-
-#: includes/templates/search-settings-page.php:11
-#: ultimate-guitar-tabs-chords.php:108 ultimate-guitar-tabs-chords.php:144
+#: includes/templates/search-settings-page.php:13 includes/ug-settings.php:51
+#: ultimate-guitar-tabs-chords.php:151
 msgid "Search Settings"
 msgstr ""
 
-#: includes/templates/search-settings-page.php:15
+#: includes/templates/search-settings-page.php:17
 msgid "Save Changes"
 msgstr ""
 
-#: includes/ug-client.php:52
+#: includes/ug-client.php:53
 msgid "Video"
 msgstr ""
 
-#: includes/ug-client.php:53
+#: includes/ug-client.php:54
 msgid "Tab"
 msgstr ""
 
-#: includes/ug-client.php:54
+#: includes/ug-client.php:55
 msgid "Chords"
 msgstr ""
 
-#: includes/ug-client.php:55
+#: includes/ug-client.php:56
 msgid "Bass"
 msgstr ""
 
-#: includes/ug-client.php:56
+#: includes/ug-client.php:57
 msgid "Guitar Pro"
 msgstr ""
 
-#: includes/ug-client.php:57
+#: includes/ug-client.php:58
 msgid "Power"
 msgstr ""
 
-#: includes/ug-client.php:58
+#: includes/ug-client.php:59
 msgid "Drums"
 msgstr ""
 
-#: includes/ug-client.php:59
+#: includes/ug-client.php:60
 msgid "Ukulele"
 msgstr ""
 
-#: includes/ug-client.php:60
+#: includes/ug-client.php:61
 msgid "Official"
 msgstr ""
 
-#: includes/ug-client.php:63
+#: includes/ug-client.php:64
 msgid "Album"
 msgstr ""
 
-#: includes/ug-client.php:64
+#: includes/ug-client.php:65
 msgid "Intro"
 msgstr ""
 
-#: includes/ug-client.php:65
+#: includes/ug-client.php:66
 msgid "Solo"
 msgstr ""
 
-#: includes/ug-client.php:66
+#: includes/ug-client.php:67
 msgid "Whole song"
 msgstr ""
 
-#: includes/ug-client.php:70
+#: includes/ug-client.php:71
 msgid "Title ABC"
 msgstr ""
 
-#: includes/ug-client.php:71
+#: includes/ug-client.php:72
 msgid "Relevance"
 msgstr ""
 
-#: includes/ug-client.php:108
+#: includes/ug-client.php:115
 msgid "Invalid value supplied for type 1 search parameter"
 msgstr ""
 
-#: includes/ug-client.php:145
+#: includes/ug-client.php:153
 msgid "Invalid value supplied for type 2 search parameter"
 msgstr ""
 
-#: includes/ug-client.php:180
+#: includes/ug-client.php:189
 msgid "Invalid value supplied for order search parameter"
 msgstr ""
 
-#: includes/ug-client.php:211
+#: includes/ug-client.php:221
 msgid "Invalid value supplied for ratings search parameter"
 msgstr ""
 
-#: includes/ug-shortcode.php:41
-msgid "Name"
+#: includes/ug-client.php:276
+msgid "Ultimate-Guitar Tabs & Chords: could not establish connection to \"%s\""
 msgstr ""
 
-#: includes/ug-shortcode.php:42
-msgid "Type"
-msgstr ""
-
-#: includes/ug-shortcode.php:43
-msgid "Rating"
-msgstr ""
-
-#: ultimate-guitar-tabs-chords.php:98 ultimate-guitar-tabs-chords.php:99
-msgid "UGTC"
-msgstr ""
-
-#: ultimate-guitar-tabs-chords.php:107
-msgid "UGTC Search Settings"
-msgstr ""
-
-#: ultimate-guitar-tabs-chords.php:145
+#: includes/ug-settings.php:57
 msgid "Entry Types"
 msgstr ""
 
-#: ultimate-guitar-tabs-chords.php:146
+#: includes/ug-settings.php:64
 msgid "Entry Lengths"
 msgstr ""
 
-#: ultimate-guitar-tabs-chords.php:147
+#: includes/ug-settings.php:71
 msgid "Sorting Method"
 msgstr ""
 
-#: ultimate-guitar-tabs-chords.php:148
+#: includes/ug-settings.php:78
 msgid "Allowed Ratings"
 msgstr ""
 
-#: ultimate-guitar-tabs-chords.php:157
-msgid "Change the content search settings for Ultimate Guitar Tabs & Chords."
+#: includes/ug-settings.php:92
+msgid ""
+"%sChange the content search settings for Ultimate Guitar Tabs & Chords. "
+"%sHint: press ctrl/cmd to select multiple values.%s"
+msgstr ""
+
+#: includes/ug-shortcode.php:74
+msgid "No artist specified."
+msgstr ""
+
+#: includes/ug-shortcode.php:110
+msgid "Ultimate-Guitar Tabs & Chords: error with registering shortcode %s"
+msgstr ""
+
+#: includes/ug-shortcode.php:190
+msgid "Name"
+msgstr ""
+
+#: includes/ug-shortcode.php:191
+msgid "Type"
+msgstr ""
+
+#: includes/ug-shortcode.php:192
+msgid "Rating"
+msgstr ""
+
+#: ultimate-guitar-tabs-chords.php:117
+msgid "Settings"
+msgstr ""
+
+#: ultimate-guitar-tabs-chords.php:140 ultimate-guitar-tabs-chords.php:141
+msgid "UGTC"
+msgstr ""
+
+#: ultimate-guitar-tabs-chords.php:150
+msgid "UGTC Search Settings"
 msgstr ""
 
 #. Plugin URI of the plugin/theme

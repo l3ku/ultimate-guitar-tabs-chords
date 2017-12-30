@@ -3,22 +3,228 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Ultimate Guitar Tabs & Chords 0.0.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Ultimate-Guitar-Tabs-"
-"Chords\n"
-"POT-Creation-Date: 2017-10-09 21:37+0300\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ultimate-guitar-"
+"tabs-chords\n"
+"POT-Creation-Date: 2017-12-30 19:19:14+00:00\n"
+"PO-Revision-Date: 2017-12-30 21:21+0200\n"
+"Last-Translator: Leo Toikka <leo@seravo.fi>\n"
+"Language-Team: \n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-10-09 22:18+0300\n"
-"Language-Team: \n"
-"X-Generator: Poedit 2.0.4\n"
-"Last-Translator: Leo Toikka <leo@seravo.fi>\n"
+"X-Generator: Poedit 2.0.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: fi\n"
+
+#: includes/templates/main-page.php:30
+msgid "Cache emptied successfully!"
+msgstr "Välimuisti tyhjennetty onnistuneesti!"
 
 #. Plugin Name of the plugin/theme
+#: includes/templates/main-page.php:35
 msgid "Ultimate Guitar Tabs & Chords"
 msgstr "Ultimate Guitar Tabulatuurit & Soinnut"
+
+#: includes/templates/main-page.php:39
+msgid "Shortcode Generator"
+msgstr "Lyhytkoodigeneraattori"
+
+#: includes/templates/main-page.php:43
+msgid ""
+"This plugin works via a shortcode, which is added to a page or post. "
+"Generate the shortcode by using the generator below:"
+msgstr ""
+"Tämä lisäosa toimii lisäämällä lyhytkoodi WordPressin sivuun tai "
+"artikkeliin. Lyhytkoodin voi luoda alla olevalla generaattorilla:"
+
+#: includes/templates/main-page.php:49
+msgid "Artist"
+msgstr "Esittäjä"
+
+#: includes/templates/main-page.php:52
+msgid "Artist Name"
+msgstr "Esittäjän nimi"
+
+#: includes/templates/main-page.php:58
+msgid "Limit results"
+msgstr "Rajoita tuloksia"
+
+#: includes/templates/main-page.php:67
+msgid "Generate Shortcode"
+msgstr "Luo lyhytkoodi"
+
+#: includes/templates/main-page.php:74
+msgid "Your Shortcode: "
+msgstr "Lyhytkoodisi: "
+
+#: includes/templates/main-page.php:89
+msgid "Cache"
+msgstr "Välimuisti"
+
+#: includes/templates/main-page.php:92
+msgid ""
+"Ultimate Guitar Tabs & Chords uses the transient API of WordPress to cache "
+"data, resulting in much faster loading times. This might cause delay for "
+"your modifications to become visible, so be sure to empty the cache after "
+"modifications. "
+msgstr ""
+"Ultimate Guitar Tabulatuurit & Soinnut käyttää WordPressin Transient-"
+"rajapintaa välimuistin tarjoamiseksi, jonka seurauksena lautausnopeudet ovat "
+"huomattavasti nopeammat. Tämä saattaa kuitenkin aiheuttaa viivettä muutosten "
+"näkyviin tulemisessa, joten suosittelemme tyhjentämään välimuistin muutosten "
+"tekemisen jälkeen. "
+
+#: includes/templates/main-page.php:95
+msgid "Purge Cache"
+msgstr "Tyhjennä välimuisti"
+
+#: includes/templates/search-settings-page.php:13 includes/ug-settings.php:51
+#: ultimate-guitar-tabs-chords.php:151
+msgid "Search Settings"
+msgstr "Hakuasetukset"
+
+#: includes/templates/search-settings-page.php:17
+msgid "Save Changes"
+msgstr "Tallenna muutokset"
+
+#: includes/ug-client.php:53
+msgid "Video"
+msgstr "Video"
+
+#: includes/ug-client.php:54
+msgid "Tab"
+msgstr "Tabulatuuri"
+
+#: includes/ug-client.php:55
+msgid "Chords"
+msgstr "Soinnut"
+
+#: includes/ug-client.php:56
+msgid "Bass"
+msgstr "Basso"
+
+#: includes/ug-client.php:57
+msgid "Guitar Pro"
+msgstr "Guitar Pro"
+
+#: includes/ug-client.php:58
+msgid "Power"
+msgstr "Power"
+
+#: includes/ug-client.php:59
+msgid "Drums"
+msgstr "Rummut"
+
+#: includes/ug-client.php:60
+msgid "Ukulele"
+msgstr "Ukulele"
+
+#: includes/ug-client.php:61
+msgid "Official"
+msgstr "Virallinen"
+
+#: includes/ug-client.php:64
+msgid "Album"
+msgstr "Albumi"
+
+#: includes/ug-client.php:65
+msgid "Intro"
+msgstr "Intro"
+
+#: includes/ug-client.php:66
+msgid "Solo"
+msgstr "Soolo"
+
+#: includes/ug-client.php:67
+msgid "Whole song"
+msgstr "Kokonainen kappale"
+
+#: includes/ug-client.php:71
+msgid "Title ABC"
+msgstr "Otsikko ABC"
+
+#: includes/ug-client.php:72
+msgid "Relevance"
+msgstr "Relevanssi"
+
+#: includes/ug-client.php:115
+msgid "Invalid value supplied for type 1 search parameter"
+msgstr "Vääränlainen arvo hakuparametrina (type 1)"
+
+#: includes/ug-client.php:153
+msgid "Invalid value supplied for type 2 search parameter"
+msgstr "Vääränlainen arvo hakuparametrina (type 2)"
+
+#: includes/ug-client.php:189
+msgid "Invalid value supplied for order search parameter"
+msgstr "Vääränlainen arvo hakuparametrina (order)"
+
+#: includes/ug-client.php:221
+msgid "Invalid value supplied for ratings search parameter"
+msgstr "Vääränlainen arvo hakuparametrina (ratings)"
+
+#: includes/ug-client.php:276
+msgid "Ultimate-Guitar Tabs & Chords: could not establish connection to \"%s\""
+msgstr ""
+"Ultimate Guitar Tabulatuurit & Soinnut: yhteyttä ei voitu muodostaa "
+"osoitteeseen “%s”"
+
+#: includes/ug-settings.php:57
+msgid "Entry Types"
+msgstr "Tulosten tyyppi"
+
+#: includes/ug-settings.php:64
+msgid "Entry Lengths"
+msgstr "Tulosten pituus"
+
+#: includes/ug-settings.php:71
+msgid "Sorting Method"
+msgstr "Järjestystapa"
+
+#: includes/ug-settings.php:78
+msgid "Allowed Ratings"
+msgstr "Sallitut arvostelut"
+
+#: includes/ug-settings.php:92
+msgid ""
+"%sChange the content search settings for Ultimate Guitar Tabs & Chords. "
+"%sHint: press ctrl/cmd to select multiple values.%s"
+msgstr ""
+"%sMuuta hakutulosten asetuksia. %sVinkki: paina ctrl/cmd valitaksesi "
+"useampia arvoja. %s"
+
+#: includes/ug-shortcode.php:74
+msgid "No artist specified."
+msgstr "Esiintyjää ei ole valittu."
+
+#: includes/ug-shortcode.php:110
+msgid "Ultimate-Guitar Tabs & Chords: error with registering shortcode %s"
+msgstr ""
+"Ultimate-Guitar Tabulatuurit & Soinnut: virhe lyhytkoodin %s rekisteröinnissä"
+
+#: includes/ug-shortcode.php:190
+msgid "Name"
+msgstr "Nimi"
+
+#: includes/ug-shortcode.php:191
+msgid "Type"
+msgstr "Tyyppi"
+
+#: includes/ug-shortcode.php:192
+msgid "Rating"
+msgstr "Arvostelut"
+
+#: ultimate-guitar-tabs-chords.php:117
+msgid "Settings"
+msgstr "Asetukset"
+
+#: ultimate-guitar-tabs-chords.php:140 ultimate-guitar-tabs-chords.php:141
+msgid "UGTC"
+msgstr "UGTC"
+
+#: ultimate-guitar-tabs-chords.php:150
+msgid "UGTC Search Settings"
+msgstr "UGTC-hakuasetukset"
 
 #. Plugin URI of the plugin/theme
 msgid "https://github.com/l3ku/ultimate-guitar-tabs-chords"
@@ -26,7 +232,8 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid "Fetches tabs and chords from Ultimate Guitar"
-msgstr "Hae tabulatuurit ja soinnut kätevästi suoraan Ultimate Guitar -palvelusta"
+msgstr ""
+"Hae tabulatuurit ja soinnut kätevästi suoraan Ultimate Guitar -palvelusta"
 
 #. Author of the plugin/theme
 msgid "Leo Toikka & Antti Kymén"

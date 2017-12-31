@@ -108,7 +108,7 @@ if ( ! class_exists( 'UGShortcode' ) ) {
           'ugtc_shortcode_not_registered',
           sprintf(
             __( 'Ultimate-Guitar Tabs & Chords: error with registering shortcode %s' ),
-            $this->ug_shortcode_str
+            self::$ug_shortcode_str
           )
         );
 

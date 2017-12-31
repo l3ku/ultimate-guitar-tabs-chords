@@ -45,7 +45,15 @@ if ( ! class_exists( 'UGSettings' ) ) {
       register_setting( 'ugtc-search-settings-group', 'ugtc_search_entry_lengths' );
       register_setting( 'ugtc-search-settings-group', 'ugtc_search_sort_option' );
       register_setting( 'ugtc-search-settings-group', 'ugtc_search_ratings' );
+    }
 
+    /**
+     * Add the plugin settings sections along with their corresponding settings
+     * fields.
+     *
+     * @since 0.0.1
+     */
+    public function addSettingsSections() {
       add_settings_section(
         'ugtc-search-settings-section',
         __( 'Search Settings', 'ug-tabs-chords' ),
@@ -94,7 +102,7 @@ if ( ! class_exists( 'UGSettings' ) ) {
           'ug-tabs-chords'
         ),
         '<p>',
-        '<br><small>', 
+        '<br><small>',
         '</small></p>'
       );
     }

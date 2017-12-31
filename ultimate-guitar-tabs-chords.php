@@ -87,6 +87,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
      */
     public function registerSettings() {
       $this->ug_settings->registerSettings();
+      $this->ug_settings->addSettingsSections();
     }
 
     /**

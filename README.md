@@ -24,9 +24,9 @@ Add the plugin shortcode to the desired page or post. You can generate the plugi
 ## Tests
 PHPUnit based unit tests are included in this project in the `tests/` directory. Before running the tests, install the WordPress test suite by running the installation script in the plugin directory:
 
-```bash bin/install-wp-tests.sh wordpress_test <DB_USER> <DB_PASSWORD>  localhost $WP_VERSION```
+```bash bin/install-wp-tests.sh wordpress_test <DB_USER> <DB_PASSWORD> localhost latest```
 
-**NOTE: ** *the database user needs permissions to create tables*
+__NOTE: __* *the database user needs permissions to create tables*
 
 The tests can then be run by simply running the command `phpunit`.
 

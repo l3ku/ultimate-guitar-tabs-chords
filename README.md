@@ -26,7 +26,7 @@ PHPUnit based unit tests are included in this project in the `tests/` directory.
 
 ```bash bin/install-wp-tests.sh wordpress_test <DB_USER> <DB_PASSWORD> localhost latest```
 
-__NOTE: __* *the database user needs permissions to create tables*
+<b>NOTE: </b> *the database user needs permissions to create tables*
 
 The tests can then be run by simply running the command `phpunit`.
 

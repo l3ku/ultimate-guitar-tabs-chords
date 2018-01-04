@@ -30,27 +30,27 @@ defined( 'ABSPATH' ) or die( 'Access Denied!' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/ug-shortcode.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/ug-settings.php' );
 
-if ( ! class_exists( 'UGTabsChords' ) ) {
+if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
 
   /**
-   * Class UGTabsChords
+   * Class UG_Tabs_Chords
    *
    * @package ug-tabs-chords
    * @version  0.0.1
    * @since 0.0.1
    * @author Leo Toikka
    */
-  class UGTabsChords {
+  class UG_Tabs_Chords {
 
     /**
      * Settings handler for registering and providing functionality to settings.
-     * @var UGSettings
+     * @var UG_Settings
      */
     private $ug_settings;
 
     /**
      * Shortcode registration and functionality.
-     * @var UGShortcode
+     * @var UG_Shortcode
      */
     private $ug_shortcode;
 
@@ -60,15 +60,15 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     * @since 0.0.1
     */
     public function __construct() {
-      $this->ug_settings = new UGSettings();
-      $this->ug_shortcode = new UGShortcode();
+      $this->ug_settings = new UG_Settings();
+      $this->ug_shortcode = new UG_Shortcode();
 
-      add_action( 'plugins_loaded', array( $this, 'loadTextdomain' ) );
-      add_action( 'admin_enqueue_scripts', array( $this, 'enqueueScripts' ) );
-      add_action( 'admin_init', array( $this, 'registerSettings' ) );
-      add_action( 'admin_menu', array( $this, 'addAdminPages' ) );
-      add_action( 'init', array( $this, 'registerShortcode' ) );
-      add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'addSettingsActionLink' ) );
+      add_action( 'plugins_loaded', array( $this, 'load_text_domain' ) );
+      add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+      add_action( 'admin_init', array( $this, 'register_settings' ) );
+      add_action( 'admin_menu', array( $this, 'add_admin_pages' ) );
+      add_action( 'init', array( $this, 'register_shortcode' ) );
+      add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_settings_action_link' ) );
     }
 
     /**
@@ -76,7 +76,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     *
     * @since 0.0.1
     */
-    public function loadTextdomain() {
+    public function load_text_domain() {
       load_plugin_textdomain( 'ug-tabs-chords', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     }
 
@@ -85,9 +85,9 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
      *
      * @since 0.0.1
      */
-    public function registerSettings() {
-      $this->ug_settings->registerSettings();
-      $this->ug_settings->addSettingsSections();
+    public function register_settings() {
+      $this->ug_settings->register_settings();
+      $this->ug_settings->add_settings_sections();
     }
 
     /**
@@ -95,8 +95,8 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     *
     * @since 0.0.1
     */
-    public function registerShortcode() {
-      $this->ug_shortcode->registerShortcode();
+    public function register_shortcode() {
+      $this->ug_shortcode->register_shortcode();
     }
 
     /**
@@ -106,7 +106,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
      * @return array Links including the added settings links
      * @since 0.0.1
      */
-    public function addSettingsActionLink( $links ) {
+    public function add_settings_action_link( $links ) {
       $admin_link = admin_url( 'admin.php?page=ug_tabs_chords' );
 
       // Check if WordPress is a network installation
@@ -126,7 +126,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     *
     * @since 0.0.1
     */
-    public function enqueueScripts() {
+    public function enqueue_scripts() {
       wp_enqueue_style( 'ug-tabs-chords', plugins_url( '/assets/css/ug-tabs-chords.css', __FILE__ ) );
     }
 
@@ -136,13 +136,13 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     *
     * @since 0.0.1
     */
-    public function addAdminPages() {
+    public function add_admin_pages() {
       add_menu_page(
         __( 'UGTC', 'ug-tabs-chords' ),
         __( 'UGTC', 'ug-tabs-chords' ),
         'manage_options',
         'ug_tabs_chords',
-        array( $this, 'createMainPage' ),
+        array( $this, 'create_main_page' ),
         'dashicons-album'
       );
 
@@ -152,7 +152,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
         __( 'Search Settings', 'ug-tabs-chords' ),
         'manage_options',
         'ug_tabs_chords_search_settings',
-        array( $this, 'createSearchSettingsPage' )
+        array( $this, 'create_search_settings_page' )
       );
     }
 
@@ -161,7 +161,7 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     *
     * @since 0.0.1
     */
-    public function createMainPage() {
+    public function create_main_page() {
       require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/main-page.php' );
     }
 
@@ -170,10 +170,10 @@ if ( ! class_exists( 'UGTabsChords' ) ) {
     *
     * @since 0.0.1
     */
-    public function createSearchSettingsPage() {
+    public function create_search_settings_page() {
       require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/search-settings-page.php' );
     }
   }
 
-  $ugtabschords = new UGTabsChords();
+  $ug_tabs_chords = new UG_Tabs_Chords();
 }

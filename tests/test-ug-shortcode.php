@@ -1,64 +1,64 @@
 <?php
 /**
-* Class TestUGShortcode
+* Class Test_UG_Shortcode
 *
 * @package ug-tabs-chords
 * @version  0.0.1
 * @since 0.0.1
 * @author Leo Toikka
 */
-class TestUGShortcode extends WP_UnitTestCase {
+class Test_UG_Shortcode extends WP_UnitTestCase {
 
   /**
   * Init test case.
   */
-  public function testUGShortcodeInit() {
-   $ug_shortcode = new UGShortcode();
+  public function test_ug_shortcode_init() {
+   $ug_shortcode = new UG_Shortcode();
    return $ug_shortcode;
   }
 
   /**
    * Test that the plugin shortcode is registered successfully.
-   * @depends testUGShortcodeInit
+   * @depends test_ug_shortcode_init
    *
-   * @param UGShortcode $instance Tested instance created in testUGShortcodeInit()
+   * @param UG_Shortcode $instance Tested instance created in test_ug_shortcode_init()
    */
-  public function testUGShortcodeRegister( $instance ) {
+  public function test_ug_shortcode_register( $instance ) {
     global $shortcode_tags;
-    $instance->registerShortcode();
+    $instance->register_shortcode();
 
     $this->assertTrue( array_key_exists( 'ug-tabs-chords', $shortcode_tags ) );
   }
 
   /**
    * Test that the plugin shortcode is generated.
-   * @depends testUGShortcodeInit
+   * @depends test_ug_shortcode_init
    *
-   * @param UGShortcode $instance Tested instance created in testUGShortcodeInit()
+   * @param UG_Shortcode $instance Tested instance created in test_ug_shortcode_init()
    */
-  public function testUGShortcodeGenerate( $instance ) {
-    $instance->registerShortcode();
+  public function test_ug_shortcode_generate( $instance ) {
+    $instance->register_shortcode();
 
     // Test that providing no artist at all causes an error
-    $this->assertTrue( is_wp_error( $instance->generateShortcode( '', 0 ) ) );
+    $this->assertTrue( is_wp_error( $instance->generate_shortcode( '', 0 ) ) );
 
     // Test with valid values
     $test_artist = 'Test';
     $test_limit = 50;
-    $result = $instance->generateShortcode( $test_artist, $test_limit );
+    $result = $instance->generate_shortcode( $test_artist, $test_limit );
     $this->assertEquals( $result, '[ug-tabs-chords artist="Test" limit="50"]' );
   }
 
   /**
    * Test that the plugin shortcode is created.
-   * @depends testUGShortcodeInit
+   * @depends test_ug_shortcode_init
    *
-   * @param UGShortcode $instance Tested instance created in testUGShortcodeInit()
+   * @param UG_Shortcode $instance Tested instance created in test_ug_shortcode_init()
    */
-  public function testUGShortcodeCreate( $instance ) {
+  public function test_ug_shortcode_create( $instance ) {
     // Test that an error is caused when the shortcode has not been registered
     remove_shortcode( 'ug-tabs-chords' );
-    $this->assertTrue( is_wp_error( $instance->createShortcode( array(), array() ) ) );
+    $this->assertTrue( is_wp_error( $instance->create_shortcode( array(), array() ) ) );
 
     // TODO: Test with valid values
   }

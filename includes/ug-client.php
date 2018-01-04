@@ -9,19 +9,19 @@ defined( 'ABSPATH' ) or die( 'Access Denied!' );
 
 require_once( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' );
 
-use simplehtmldom_1_5\simple_html_dom as HtmlDom;
+use simplehtmldom_1_5\simple_html_dom as Html_Dom;
 
-if ( ! class_exists( 'UGClient' ) ) {
+if ( ! class_exists( 'UG_Client' ) ) {
 
   /**
-  * Class UGClient
+  * Class UG_Client
   *
   * @package ug-tabs-chords
   * @version  0.0.1
   * @since 0.0.1
   * @author Leo Toikka
   */
-  class UGClient {
+  class UG_Client {
 
     /* Basic search URL for Ultimate Guitar */
     private $query_string_ug_search_url;
@@ -74,8 +74,9 @@ if ( ! class_exists( 'UGClient' ) ) {
 
       // Set defaults
       $this->query_string_ug_search_url = 'https://www.ultimate-guitar.com/search.php?';
-      $this->setDefaultParams();
+      $this->set_default_params();
     }
+
     /**
      * Resets the current client search parameter values to the default ones:
      * type_1: Tabs (200) & Chords (300)
@@ -83,7 +84,7 @@ if ( ! class_exists( 'UGClient' ) ) {
      * ratings: 1-5
      * order: relevancy
      */
-    public function setDefaultParams() {
+    public function set_default_params() {
       // Return both chords and tabs by default
       $this->type_1 = array( 200, 300 );
       // Return full songs by default
@@ -110,7 +111,7 @@ if ( ! class_exists( 'UGClient' ) ) {
     *   900 = official
     * @return mixed True if the operation succeeded, or WP_ERROR object.
     */
-    public function setType1( $type_1 ) {
+    public function set_type_1( $type_1 ) {
       if ( array_intersect( $type_1, array_keys( $this->possible_type_1_values ) ) != $type_1 ) {
         return new WP_Error( 'invalid_type_1_value', __( 'Invalid value supplied for type 1 search parameter', 'ug-tabs-chords' ) );
       }
@@ -124,7 +125,7 @@ if ( ! class_exists( 'UGClient' ) ) {
     *
     * @return array (int) The type 1 for search results
     */
-    public function getType1() {
+    public function get_type_1() {
       return $this->type_1;
     }
 
@@ -133,7 +134,7 @@ if ( ! class_exists( 'UGClient' ) ) {
     *
     * @return array (int) The possible type 1 values for search results
     */
-    public function getPossibleType1Values() {
+    public function get_possible_type_1_values() {
       return $this->possible_type_1_values;
     }
 
@@ -148,7 +149,7 @@ if ( ! class_exists( 'UGClient' ) ) {
     *   40000 = whole song
     * @return mixed True if the operation succeeded, or WP_ERROR object.
     */
-    public function setType2( $type_2 ) {
+    public function set_type_2( $type_2 ) {
       if ( array_intersect( $type_2, array_keys( $this->possible_type_2_values ) ) != $type_2 ) {
         return new WP_Error( 'invalid_type_2_value', __( 'Invalid value supplied for type 2 search parameter', 'ug-tabs-chords' ) );
       }
@@ -162,7 +163,7 @@ if ( ! class_exists( 'UGClient' ) ) {
     *
     * @return string The type 2 for search results
     */
-    public function getType2() {
+    public function get_type_2() {
       return $this->type_2;
     }
 
@@ -171,7 +172,7 @@ if ( ! class_exists( 'UGClient' ) ) {
     *
     * @return array (int) The possible type 2 values for search results
     */
-    public function getPossibleType2Values() {
+    public function get_possible_type_2_values() {
       return $this->possible_type_2_values;
     }
 
@@ -184,7 +185,7 @@ if ( ! class_exists( 'UGClient' ) ) {
     *   'myweight' = Sort by relevancy
     * @return mixed True if the operation succeeded, or WP_ERROR object.
     */
-    public function setOrder( $order ) {
+    public function set_order( $order ) {
       if ( ! in_array( $order, array_keys( $this->possible_order_values ) ) ) {
         return new WP_Error( 'invalid_order_value', __( 'Invalid value supplied for order search parameter', 'ug-tabs-chords' ) );
       }
@@ -198,7 +199,7 @@ if ( ! class_exists( 'UGClient' ) ) {
     *
     * @return string The order for search results
     */
-    public function getOrder() {
+    public function get_order() {
       return $this->order;
     }
 
@@ -207,7 +208,7 @@ if ( ! class_exists( 'UGClient' ) ) {
     *
     * @return array (int) The possible order values for search results
     */
-    public function getPossibleOrderValues() {
+    public function get_possible_order_values() {
       return $this->possible_order_values;
     }
 
@@ -216,7 +217,7 @@ if ( ! class_exists( 'UGClient' ) ) {
     *
     * @param array $ratings The rating values (1-5) to set.
     */
-    public function setAllowedRatings( $ratings ) {
+    public function set_allowed_ratings( $ratings ) {
       if ( array_intersect( $ratings, $this->possible_rating_values ) != $ratings ) {
         return new WP_Error( 'invalid_rating_value', __( 'Invalid value supplied for ratings search parameter', 'ug-tabs-chords' ) );
       }
@@ -230,7 +231,7 @@ if ( ! class_exists( 'UGClient' ) ) {
     *
     * @return string The ratings for search results
     */
-    public function getAllowedRatings() {
+    public function get_allowed_ratings() {
       return $this->ratings;
     }
 
@@ -239,7 +240,7 @@ if ( ! class_exists( 'UGClient' ) ) {
     *
     * @return array (int) The possible rating values for search results
     */
-    public function getPossibleRatingValues() {
+    public function get_possible_rating_values() {
       return $this->possible_rating_values;
     }
 
@@ -259,20 +260,20 @@ if ( ! class_exists( 'UGClient' ) ) {
         'type2'      =>     $this->type_2
       );
 
-      return $this->performSearch( $search_array );
+      return $this->perform_search( $search_array );
     }
 
-    private function performSearch( $search_params ) {
+    private function perform_search( $search_params ) {
       // Construct query string based on search parameters
-      $query_string = $this->buildQueryString( $search_params );
+      $query_string = $this->build_query_string( $search_params );
 
       // Create HTML Dom and specify timeout limit to 15 seconds so the
       // site may still function in case of some errors.
-      $html = new HtmlDom();
+      $html = new Html_Dom();
       set_time_limit(15);
 
       // Don't continue if the html dom caused an error
-      if ( @$html->load_file( $query_string ) === false ) {
+      if ( false === @$html->load_file( $query_string ) ) {
         error_log( sprintf( __( 'Ultimate-Guitar Tabs & Chords: could not establish connection to "%s"', 'ug-tabs-chords' ), $this->query_string_ug_search_url ) );
         return array();
       }
@@ -317,7 +318,7 @@ if ( ! class_exists( 'UGClient' ) ) {
       return $ug_return_data;
     }
 
-    private function buildQueryString( $searchParams ) {
+    private function build_query_string( $searchParams ) {
       $query_string = $this->query_string_ug_search_url;
       $query_string .= http_build_query( $searchParams );
 

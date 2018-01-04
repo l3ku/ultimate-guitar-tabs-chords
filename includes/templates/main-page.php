@@ -16,8 +16,8 @@ if ( isset( $_POST['ugtc_shortcode_artist'] ) && isset( $_POST['ugtc_shortcode_l
   $limit = trim( wp_kses( $_POST['ugtc_shortcode_limit_results'], array() ) );
 
   // Generate shortcode and remove the artist from cache.
-  $gen_shortcode = UGShortcode::generateShortcode( $artist, $limit );
-  UGCache::removeFromCache( $artist );
+  $gen_shortcode = UG_Shortcode::generate_shortcode( $artist, $limit );
+  UG_Cache::remove_from_cache( $artist );
 }
 
 ?>
@@ -25,7 +25,7 @@ if ( isset( $_POST['ugtc_shortcode_artist'] ) && isset( $_POST['ugtc_shortcode_l
 <div class="wrap">
   <!-- Display purge cache success -->
   <?php if ( isset( $_POST['ugtc_purge_cache'] ) ) : ?>
-    <?php UGCache::purgeCache(); ?>
+    <?php UG_Cache::purge_cache(); ?>
     <div class="notice notice-success is-dismissible ugtc-success-msg">
       <?php _e( 'Cache emptied successfully!', 'ug-tabs-chords' ); ?>
     </div>

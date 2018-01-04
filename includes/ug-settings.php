@@ -9,30 +9,30 @@ defined( 'ABSPATH' ) or die( 'Access Denied!' );
 
 require_once( plugin_dir_path( __FILE__ ) . '/ug-client.php' );
 
-if ( ! class_exists( 'UGSettings' ) ) {
+if ( ! class_exists( 'UG_Settings' ) ) {
 
   /**
-  * Class UGSettings
+  * Class UG_Settings
   *
   * @package ug-tabs-chords
   * @version  0.0.1
   * @since 0.0.1
   * @author Leo Toikka
   */
-  class UGSettings {
+  class UG_Settings {
 
     /**
      * Ultimate Guitar HTML client.
-     * @var UGClient
+     * @var UG_Client
      */
     private $ug_client;
 
     /**
-     * Initialize the class, create a UGClient instance to get possible settings
+     * Initialize the class, create a UG_Client instance to get possible settings
      * values.
      */
     public function __construct() {
-      $this->ug_client = new UGClient();
+      $this->ug_client = new UG_Client();
     }
 
     /**
@@ -40,7 +40,7 @@ if ( ! class_exists( 'UGSettings' ) ) {
     *
     * @since 0.0.1
     */
-    public function registerSettings() {
+    public function register_settings() {
       register_setting( 'ugtc-search-settings-group', 'ugtc_search_entry_types' );
       register_setting( 'ugtc-search-settings-group', 'ugtc_search_entry_lengths' );
       register_setting( 'ugtc-search-settings-group', 'ugtc_search_sort_option' );
@@ -53,38 +53,38 @@ if ( ! class_exists( 'UGSettings' ) ) {
      *
      * @since 0.0.1
      */
-    public function addSettingsSections() {
+    public function add_settings_sections() {
       add_settings_section(
         'ugtc-search-settings-section',
         __( 'Search Settings', 'ug-tabs-chords' ),
-        array( $this, 'searchSettingsDescription' ),
+        array( $this, 'search_settings_description' ),
         'ug_tabs_chords_search_settings'
       );
       add_settings_field(
         'search-entry-types',
         __( 'Entry Types', 'ug-tabs-chords' ),
-        array( $this, 'settingsSearchEntryTypes' ),
+        array( $this, 'settings_search_entry_types' ),
         'ug_tabs_chords_search_settings',
         'ugtc-search-settings-section'
       );
       add_settings_field(
         'search-entry-lengths',
         __( 'Entry Lengths', 'ug-tabs-chords' ),
-        array( $this, 'settingsSearchEntryLengths' ),
+        array( $this, 'settings_search_entry_lengths' ),
         'ug_tabs_chords_search_settings',
         'ugtc-search-settings-section'
       );
       add_settings_field(
         'search-sort-option',
         __( 'Sorting Method', 'ug-tabs-chords' ),
-        array( $this, 'settingsSearchSortOption' ),
+        array( $this, 'settings_search_sort_option' ),
         'ug_tabs_chords_search_settings',
         'ugtc-search-settings-section'
       );
       add_settings_field(
         'search-ratings',
         __( 'Allowed Ratings', 'ug-tabs-chords' ),
-        array( $this, 'settingsSearchRatings' ),
+        array( $this, 'settings_search_ratings' ),
         'ug_tabs_chords_search_settings',
         'ugtc-search-settings-section'
       );
@@ -95,7 +95,7 @@ if ( ! class_exists( 'UGSettings' ) ) {
     *
     * @since 0.0.1
     */
-    public function searchSettingsDescription() {
+    public function search_settings_description() {
       echo wp_sprintf(
         __(
           '%sChange the content search settings for Ultimate Guitar Tabs & Chords. %sHint: press ctrl/cmd to select multiple values.%s',
@@ -112,13 +112,13 @@ if ( ! class_exists( 'UGSettings' ) ) {
     *
     * @since 0.0.1
     */
-    public function settingsSearchEntryTypes() {
+    public function settings_search_entry_types() {
       $entry_types = get_option( 'ugtc_search_entry_types' );
-      $possible_entry_types = $this->ug_client->getPossibleType1Values();
+      $possible_entry_types = $this->ug_client->get_possible_type_1_values();
 
       // Use defaults if settings are empty
       if ( empty( $entry_types ) || false === $entry_types ) {
-        $entry_types = $this->ug_client->getType1();
+        $entry_types = $this->ug_client->get_type_1();
       }
 
       echo '<select name="ugtc_search_entry_types[]" multiple>';
@@ -137,13 +137,13 @@ if ( ! class_exists( 'UGSettings' ) ) {
     *
     * @since 0.0.1
     */
-    public function settingsSearchEntryLengths() {
+    public function settings_search_entry_lengths() {
       $entry_lengths = get_option( 'ugtc_search_entry_lengths' );
-      $possible_entry_lengths = $this->ug_client->getPossibleType2Values();
+      $possible_entry_lengths = $this->ug_client->get_possible_type_2_values();
 
       // Use defaults if settings are empty
       if ( empty( $entry_lengths ) || false === $entry_lengths ) {
-        $entry_lengths = $this->ug_client->getType2();
+        $entry_lengths = $this->ug_client->get_type_2();
       }
 
       echo '<select name="ugtc_search_entry_lengths[]" multiple>';
@@ -162,13 +162,13 @@ if ( ! class_exists( 'UGSettings' ) ) {
     *
     * @since 0.0.1
     */
-    public function settingsSearchSortOption() {
+    public function settings_search_sort_option() {
       $sort_option = get_option( 'ugtc_search_sort_option' );
-      $possible_sort_options = $this->ug_client->getPossibleOrderValues();
+      $possible_sort_options = $this->ug_client->get_possible_order_values();
 
       // Use defaults if settings are empty
       if ( empty( $sort_option ) || false === $sort_option ) {
-        $sort_option = $this->ug_client->getOrder();
+        $sort_option = $this->ug_client->get_order();
       }
 
       echo '<select name="ugtc_search_sort_option">';
@@ -187,13 +187,13 @@ if ( ! class_exists( 'UGSettings' ) ) {
     *
     * @since 0.0.1
     */
-    public function settingsSearchRatings() {
+    public function settings_search_ratings() {
       $ratings = get_option( 'ugtc_search_ratings' );
-      $possible_ratings = $this->ug_client->getPossibleRatingValues();
+      $possible_ratings = $this->ug_client->get_possible_rating_values();
 
       // Use defaults if settings are empty
       if ( empty( $ratings ) || false === $ratings ) {
-        $ratings = $this->ug_client->getAllowedRatings();
+        $ratings = $this->ug_client->get_allowed_ratings();
       }
 
       echo '<select name="ugtc_search_ratings[]" multiple>';

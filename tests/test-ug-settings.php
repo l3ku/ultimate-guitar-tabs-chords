@@ -1,33 +1,33 @@
 <?php
 /**
-* Class TestUGSettings
+* Class Test_UG_Settings
 *
 * @package ug-tabs-chords
 * @version  0.0.1
 * @since 0.0.1
 * @author Leo Toikka
 */
-class TestUGSettings extends WP_UnitTestCase {
+class Test_UG_Settings extends WP_UnitTestCase {
 
   /**
   * Init test case.
   */
-  public function testUGSettingsInit() {
-   $ug_settings = new UGSettings();
+  public function test_ug_settings_init() {
+   $ug_settings = new UG_Settings();
    return $ug_settings;
   }
 
   /**
    * Test that all settings are registered successfully.
-   * @depends testUGSettingsInit
+   * @depends test_ug_settings_init
    *
-   * @param UGSettings $instance Tested instance created in testUGSettingsInit()
+   * @param UG_Settings $instance Tested instance created in test_ug_settings_init()
    */
-  public function testUGSettingsRegister( $instance ) {
+  public function test_ug_settings_register( $instance ) {
     // WP globals used to validate against
     global $new_whitelist_options, $wp_registered_settings;
 
-    $instance->registerSettings();
+    $instance->register_settings();
 
     // Test that the search settings group is registered along with its settings
     $this->assertTrue( array_key_exists( 'ugtc-search-settings-group', $new_whitelist_options ) );
@@ -39,15 +39,15 @@ class TestUGSettings extends WP_UnitTestCase {
 
   /**
    * Test that all settings sections and fields are added successfully.
-   * @depends testUGSettingsInit
+   * @depends test_ug_settings_init
    *
-   * @param UGSettings $instance Tested instance created in testUGSettingsInit()
+   * @param UG_Settings $instance Tested instance created in test_ug_settings_init()
    */
-  public function testUGSettingsSections( $instance ) {
+  public function test_ug_settings_sections( $instance ) {
     // WP globals used to validate against
     global $wp_settings_sections, $wp_settings_fields;
 
-    $instance->addSettingsSections();
+    $instance->add_settings_sections();
 
     // Test that the settings sections are added successfully
     $this->assertTrue( array_key_exists( 'ug_tabs_chords_search_settings', $wp_settings_sections ) );

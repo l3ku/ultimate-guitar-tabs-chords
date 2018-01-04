@@ -10,17 +10,17 @@ defined( 'ABSPATH' ) or die( 'Access Denied!' );
 
 require_once( plugin_dir_path( __FILE__ ) . '/ug-cache.php' );
 
-if ( ! class_exists( 'UGShortcode' ) ) {
+if ( ! class_exists( 'UG_Shortcode' ) ) {
 
   /**
-  * Class UGShortcode
+  * Class UG_Shortcode
   *
   * @package ug-tabs-chords
   * @version  0.0.1
   * @since 0.0.1
   * @author Leo Toikka
   */
-  class UGShortcode {
+  class UG_Shortcode {
 
     /**
      * The name of the plugin shortcode.
@@ -30,7 +30,7 @@ if ( ! class_exists( 'UGShortcode' ) ) {
 
     /**
      * Ultimate Guitar HTML client.
-     * @var UGClient
+     * @var UG_Client
      */
     private $ug_client;
 
@@ -38,7 +38,7 @@ if ( ! class_exists( 'UGShortcode' ) ) {
      * Initialize the class.
      */
     public function __construct() {
-      $this->ug_client = new UGClient();
+      $this->ug_client = new UG_Client();
     }
 
     /**
@@ -46,11 +46,11 @@ if ( ! class_exists( 'UGShortcode' ) ) {
     *
     * @since 0.0.1
     */
-    public function registerShortcode() {
+    public function register_shortcode() {
       add_shortcode(
         self::$ug_shortcode_str,
         function( $atts = [], $content = null ) {
-          echo $this->createShortcode( $atts, $content );
+          echo $this->create_shortcode( $atts, $content );
         }
       );
     }
@@ -63,7 +63,7 @@ if ( ! class_exists( 'UGShortcode' ) ) {
      * @return mixed Shortcode string on success, WP_Error object in case of an
      * error.
      */
-    public static function generateShortcode( $artist, $limit ) {
+    public static function generate_shortcode( $artist, $limit ) {
       $errors = array();
 
       // Artist is required
@@ -100,7 +100,7 @@ if ( ! class_exists( 'UGShortcode' ) ) {
      * @return string HTML content from Ultimate Guitar or WP_Error if the
      * shortcode has not been registered
      */
-    public function createShortcode( $atts, $content ) {
+    public function create_shortcode( $atts, $content ) {
       // Check that the shortcode exists
       if ( ! shortcode_exists( 'ug-tabs-chords' ) ) {
 
@@ -121,14 +121,14 @@ if ( ! class_exists( 'UGShortcode' ) ) {
       }
       $artist = trim( $atts['artist'] );
 
-      // Attempt to get artist entries from cache, use UGClient if necessary.
-      $results = UGCache::getCached( $artist );
+      // Attempt to get artist entries from cache, use UG_Client if necessary.
+      $results = UG_Cache::get_cached( $artist );
       if ( false === $results ) {
-        $this->setSearchSettings( $this->ug_client );
+        $this->set_search_settings( $this->ug_client );
         $results = $this->ug_client->search( $artist );
 
         // Only add to cache if any data is retreived
-        if ( ! empty( $results ) ) UGCache::addToCache( $artist, $results );
+        if ( ! empty( $results ) ) UG_Cache::add_to_cache( $artist, $results );
       }
 
       // Get limit attribute if it is set
@@ -144,7 +144,7 @@ if ( ! class_exists( 'UGShortcode' ) ) {
 
       // Create HTML table containing the results
       // TODO: Provide functionality to choose display layout type
-      $artist_table_html = $this->shortCodeHtmlTable( $results, $limit );
+      $artist_table_html = $this->shortcode_html_table( $results, $limit );
       $artist_div .= $artist_table_html . '</div>';
 
       return $artist_div;
@@ -154,25 +154,25 @@ if ( ! class_exists( 'UGShortcode' ) ) {
     * Set search settings for Ultimate Guitar Client based on the user specified
     * settings.
     */
-    private function setSearchSettings() {
+    private function set_search_settings() {
       $search_entry_types = get_option( 'ugtc_search_entry_types' );
       if ( ! empty( $search_entry_types ) ) {
-        $this->ug_client->setType1( $search_entry_types );
+        $this->ug_client->set_type_1( $search_entry_types );
       }
 
       $search_entry_lengths = get_option( 'ugtc_search_entry_lengths' );
       if ( ! empty( $search_entry_lengths ) ) {
-        $this->ug_client->setType2( $search_entry_lengths );
+        $this->ug_client->set_type_2( $search_entry_lengths );
       }
 
       $search_sort_option = get_option( 'ugtc_search_sort_option' );
       if ( ! empty( $search_sort_option ) ) {
-        $this->ug_client->setOrder( $search_sort_option );
+        $this->ug_client->set_order( $search_sort_option );
       }
 
       $search_ratings = get_option( 'ugtc_search_ratings' );
       if ( ! empty( $search_ratings ) ) {
-        $this->ug_client->setAllowedRatings( $search_ratings );
+        $this->ug_client->set_allowed_ratings( $search_ratings );
       }
     }
 
@@ -182,7 +182,7 @@ if ( ! class_exists( 'UGShortcode' ) ) {
      * @param int $limit The limit of results to show
      * @return string The HTML table equivalent of the artist search results
      */
-    private function shortCodeHtmlTable( $results_array, $limit = 1000 ) {
+    private function shortcode_html_table( $results_array, $limit = 1000 ) {
       $artist_table = '<table>';
 
       // Include table head for labels

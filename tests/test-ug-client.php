@@ -1,107 +1,107 @@
 <?php
 /**
-* Class TestUGClient
+* Class Test_UG_Client
 *
 * @package ug-tabs-chords
 * @version  0.0.1
 * @since 0.0.1
 * @author Leo Toikka
 */
-class TestUGClient extends WP_UnitTestCase {
+class Test_UG_Client extends WP_UnitTestCase {
 
   /**
   * Init test case.
   */
-  public function testUGClientInit() {
-   $ug_client = new UGClient();
+  public function test_ug_client_init() {
+   $ug_client = new UG_Client();
    return $ug_client;
   }
 
   /**
   * Test that the type 1 search parameter values are set correctly.
   *
-  * @depends testUGClientInit
+  * @depends test_ug_client_init
   */
-  public function testUGClientType1( $client ) {
+  public function test_ug_client_type_1( $client ) {
     // Test default settings
     $default_settings_reference = array( 200, 300 );
-    $default_settings = $client->getType1();
+    $default_settings = $client->get_type_1();
     $this->assertEquals( $default_settings_reference, $default_settings );
 
     // Test setting type 1 with an invalid value (9999)
     $type_1_invalid_values = array ( 9999, 200 );
-    $response = $client->setType1( $type_1_invalid_values );
+    $response = $client->set_type_1( $type_1_invalid_values );
     $this->assertEquals( true, is_wp_error( $response ) );
 
     // Test setting type 1 to allowed values
     $type_1_allowed_values = array( 500, 600, 700, 800, 900 );
-    $response = $client->setType1( $type_1_allowed_values );
+    $response = $client->set_type_1( $type_1_allowed_values );
     $this->assertEquals( true, $response );
   }
 
   /**
   * Test that the type 2 search parameter values are set correctly.
   *
-  * @depends testUGClientInit
+  * @depends test_ug_client_init
   */
-  public function testUGClientType2( $client ) {
+  public function test_ug_client_type_2( $client ) {
     // Test default settings
     $default_settings_reference = array( 40000 );
-    $default_settings = $client->getType2();
+    $default_settings = $client->get_type_2();
     $this->assertEquals( $default_settings_reference, $default_settings );
 
     // Test setting type 2 with an invalid value (9999)
     $type_2_invalid_values = array ( 20000, 30000, 9999 );
-    $response = $client->setType2( $type_2_invalid_values );
+    $response = $client->set_type_2( $type_2_invalid_values );
     $this->assertEquals( true, is_wp_error( $response ) );
 
     // Test setting type 1 to allowed values
     $type_2_allowed_values = array( 20000, 30000, 40000 );
-    $response = $client->setType2( $type_2_allowed_values );
+    $response = $client->set_type_2( $type_2_allowed_values );
     $this->assertEquals( true, $response );
   }
 
   /**
   * Test that the order search parameter values are set correctly.
   *
-  * @depends testUGClientInit
+  * @depends test_ug_client_init
   */
-  public function testUGClientOrder($client ) {
+  public function test_ug_client_order($client ) {
     // Test default settings
     $default_settings_reference = 'myweight';
-    $default_settings = $client->getOrder();
+    $default_settings = $client->get_order();
     $this->assertEquals( $default_settings_reference, $default_settings );
 
     // Test setting order with an invalid value ('test')
     $order_invalid_value ='test';
-    $response = $client->setOrder( $order_invalid_value );
+    $response = $client->set_order( $order_invalid_value );
     $this->assertEquals( true, is_wp_error( $response ) );
 
     // Test setting order to allowed values
     $order_allowed_value = 'title_srt';
-    $response = $client->setOrder( $order_allowed_value );
+    $response = $client->set_order( $order_allowed_value );
     $this->assertEquals( true, $response );
   }
 
   /**
   * Test that the ratings search parameter values are set correctly.
   *
-  * @depends testUGClientInit
+  * @depends test_ug_client_init
   */
-  public function testUGClientRatings($client ) {
+  public function test_ug_client_ratings($client ) {
     // Test default settings
     $default_settings_reference = array( 1, 2, 3, 4, 5 );
-    $default_settings = $client->getAllowedRatings();
+    $default_settings = $client->get_allowed_ratings();
     $this->assertEquals( $default_settings_reference, $default_settings );
 
     // Test setting ratings with an invalid value (6)
     $ratings_invalid_values = array( 1, 2, 4, 6 );
-    $response = $client->setAllowedRatings( $ratings_invalid_values );
+    $response = $client->set_allowed_ratings( $ratings_invalid_values );
     $this->assertEquals( true, is_wp_error( $response ) );
 
     // Test setting order to allowed values
     $ratings_allowed_values = array( 1, 2 );
-    $response = $client->setAllowedRatings( $ratings_allowed_values );
+    $response = $client->set_allowed_ratings( $ratings_allowed_values );
     $this->assertEquals( true, $response );
   }
 }

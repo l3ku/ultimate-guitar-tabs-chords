@@ -34,5 +34,6 @@ The tests can then be run by simply running the command `phpunit`.
 This project is very new and the features of this plugin are still quite limited. Feedback, issues and PR:s are welcome! However, before submitting a pull request make sure that:
 1. All tests complete successfully
 2. The commits in your PR are logical entities (use `git rebase -i` if necessary)
-3. Your code is in line with [WordPress plugin guidelines](https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/) and the style of the existing code
+3. Your code is in line with [WordPress plugin guidelines](https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/), [WordPress coding standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/php/#naming-conventions) and
+the already existing plugin code
 4. You clearly explain in the PR what is done and why

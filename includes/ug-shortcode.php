@@ -8,7 +8,8 @@
 
 defined( 'ABSPATH' ) or die( 'Access Denied!' );
 
-require_once( plugin_dir_path( __FILE__ ) . '/ug-cache.php' );
+require_once( plugin_dir_path( __FILE__ ) . '/lib/ug-cache.php' );
+require_once( plugin_dir_path( __FILE__ ) . '/ug-client.php' );
 
 if ( ! class_exists( 'UG_Shortcode' ) ) {
 
@@ -27,6 +28,12 @@ if ( ! class_exists( 'UG_Shortcode' ) ) {
      * @var string
      */
     private static $ug_shortcode_str = 'ug-tabs-chords';
+
+    /**
+     * Used to check that the provided shortcode values are correct.
+     * @var array string
+     */
+    private static $shortcode_whitelist = array( 'artist', 'type', 'order', 'limit' );
 
     /**
      * Ultimate Guitar HTML client.
@@ -56,41 +63,51 @@ if ( ! class_exists( 'UG_Shortcode' ) ) {
     }
 
     /**
+     * Return the valid shortcode attributes/keys in a whitelist array.
+     * @return array string The whitelist of valid shortcode attributes/keys.
+     */
+    public static function get_shortcode_whitelist() {
+      return self::$shortcode_whitelist;
+    }
+
+    /**
      * Generate the required shortcode string from parameters.
-     * @param string $artist The artist to include in the shortcode, can not
-     * be empty string
-     * @param mixed $limit The entry limit for artist results
+     * @param array mixed $attributes Array of attributes to specify content:
+     * 'artist' (required), 'type' (required), 'order' (optional), 'limit' (optional)
      * @return mixed Shortcode string on success, WP_Error object in case of an
      * error.
      */
-    public static function generate_shortcode( $artist, $limit ) {
-      $errors = array();
-
-      // Artist is required
-      if ( empty( $artist ) ) {
-
+    public static function generate_shortcode( $attributes ) {
+      // Artist and content type are required
+      if ( ! isset( $attributes['artist'] ) || empty( $attributes['artist'] ) ) {
         return new WP_Error(
           'no-artist',
           __( 'No artist specified.', 'ug-tabs-chords' )
         );
-
+      }
+      if ( ! isset( $attributes['type'] ) || empty( $attributes['type'] ) ) {
+        return new WP_Error(
+          'no-type',
+          __( 'No type specified.', 'ug-tabs-chords' )
+        );
       }
 
-      $shortcode_artist = sprintf( 'artist="%s"', trim( wp_kses_data( $artist ) ) );
+      // Construct shortcode based on provided attributes, check from whitelist
+      // that the values are valid
+      $shortcode_body = '[ug-tabs-chords';
+      if ( ! empty( $attributes ) ) {
 
-      // Check if the limit is set (not required)
-      $shortcode_limit = '';
-      if ( ! empty( $limit ) ) {
-        $shortcode_limit = sprintf( ' limit="%s"', trim( wp_kses_data( $limit ) ) );
+        foreach ( $attributes as $key => $val ) {
+          $sanitized_key = trim( wp_kses_data( $key ) );
+          $sanitized_value = trim( wp_kses_data( $val ) );
+
+          if ( in_array( $sanitized_key, self::$shortcode_whitelist ) && ! empty( $sanitized_value ) ) {
+            $shortcode_body .= sprintf( ' %s="%s"', $sanitized_key, $sanitized_value );
+          }
+        }
       }
-
-      return sprintf(
-        '[%s %s%s]',
-        self::$ug_shortcode_str,
-        $shortcode_artist,
-        $shortcode_limit
-      );
-
+      $shortcode_body .= ']';
+      return $shortcode_body;
     }
 
     /**
@@ -107,82 +124,82 @@ if ( ! class_exists( 'UG_Shortcode' ) ) {
         return new WP_Error(
           'ugtc_shortcode_not_registered',
           sprintf(
-            __( 'Ultimate-Guitar Tabs & Chords: error with registering shortcode %s' ),
+            __( 'Ultimate-Guitar Tabs & Chords: error with registering shortcode "%s"' ),
             self::$ug_shortcode_str
           )
         );
 
       }
 
-      // Normalize attribute keys to lowercase and search artists
-      $atts = array_change_key_case( ( array ) $atts, CASE_LOWER );
-      if ( ! isset( $atts['artist'] ) || empty( $atts['artist'] ) ) {
+      // Normalize attribute keys to lowercase
+      $atts = array_change_key_case( (array) $atts, CASE_LOWER );
+      if ( ! ( isset( $atts['artist'] ) && isset( $atts['type'] ) ) ) {
         return;
       }
-      $artist = trim( $atts['artist'] );
 
-      // Attempt to get artist entries from cache, use UG_Client if necessary.
-      $results = UG_Cache::get_cached( $artist );
-      if ( false === $results ) {
-        $this->set_search_settings( $this->ug_client );
-        $results = $this->ug_client->search( $artist );
-
-        // Only add to cache if any data is retreived
-        if ( ! empty( $results ) ) UG_Cache::add_to_cache( $artist, $results );
+      // Use only whitelisted values
+      foreach ( $atts as $key => $val ) {
+        if ( ! in_array( $key, self::$shortcode_whitelist ) ) {
+          unset( $atts[$key] );
+        }
       }
 
-      // Get limit attribute if it is set
-      if ( isset( $atts['limit'] ) && ! empty( $atts['limit'] ) ) {
-        if ( is_numeric( $atts['limit'] ) ) {
-          $limit = intval( wp_kses_data( $atts['limit'] ) );
+      // Attempt to get artist entries from cache, use UG_Client if necessary.
+      $results = UG_Cache::get_cached( $atts );
+      if ( false === $results ) {
+        $this->set_client_settings( $atts );
+        $results = $this->ug_client->get_content();
+
+        // Only add to cache if any data is retreived
+        if ( ! empty( $results ) ) {
+          UG_Cache::add_to_cache( $atts, $results );
         }
       }
 
       // Create a display div from artists' data
-      $artist_div = '<h2 class="ugtc-single-artist-name">' . $artist . '</h2>';
+      $artist_div = '<h2 class="ugtc-single-artist-name">' . $atts['artist'] . '</h2>';
       $artist_div .= '<div class="ugtc-single-artist-entries">';
 
       // Create HTML table containing the results
       // TODO: Provide functionality to choose display layout type
-      $artist_table_html = $this->shortcode_html_table( $results, $limit );
+      $artist_table_html = $this->shortcode_html_table( $results );
       $artist_div .= $artist_table_html . '</div>';
 
       return $artist_div;
     }
 
     /**
-    * Set search settings for Ultimate Guitar Client based on the user specified
+    * Set settings for Ultimate Guitar Client based on the user specified
     * settings.
     */
-    private function set_search_settings() {
-      $search_entry_types = get_option( 'ugtc_search_entry_types' );
-      if ( ! empty( $search_entry_types ) ) {
-        $this->ug_client->set_type_1( $search_entry_types );
+    private function set_client_settings( $atts ) {
+      if ( isset( $atts['artist'] ) && ! empty( $atts['artist'] ) ) {
+        $this->ug_client->set_artist( $atts['artist'] );
       }
 
-      $search_entry_lengths = get_option( 'ugtc_search_entry_lengths' );
-      if ( ! empty( $search_entry_lengths ) ) {
-        $this->ug_client->set_type_2( $search_entry_lengths );
+      if ( isset( $atts['type'] ) && ! empty( $atts['type'] ) ) {
+        $this->ug_client->set_type( $atts['type'] );
       }
 
-      $search_sort_option = get_option( 'ugtc_search_sort_option' );
-      if ( ! empty( $search_sort_option ) ) {
-        $this->ug_client->set_order( $search_sort_option );
+      if ( isset( $atts['order'] ) && ! empty( $atts['order'] ) ) {
+        $this->ug_client->set_order( $atts['order'] );
       }
 
-      $search_ratings = get_option( 'ugtc_search_ratings' );
-      if ( ! empty( $search_ratings ) ) {
-        $this->ug_client->set_allowed_ratings( $search_ratings );
+      // Get limit attribute if it is set
+      if ( isset( $atts['limit'] ) && ! empty( $atts['limit'] ) ) {
+        if ( is_numeric( $atts['limit'] ) ) {
+          $limit = intval( wp_kses_data( $atts['limit'] ) );
+          $this->ug_client->set_limit( $limit );
+        }
       }
     }
 
     /**
      * Create a HTML table from artist search results.
      * @param  array $results_array Contains the artsit search results as array
-     * @param int $limit The limit of results to show
      * @return string The HTML table equivalent of the artist search results
      */
-    private function shortcode_html_table( $results_array, $limit = 1000 ) {
+    private function shortcode_html_table( $results_array ) {
       $artist_table = '<table>';
 
       // Include table head for labels
@@ -194,11 +211,7 @@ if ( ! class_exists( 'UG_Shortcode' ) ) {
 
       if ( ! empty( $results_array ) ) {
 
-        for ( $i = 0; $i < sizeof( $results_array ); $i++ ) {
-          if ( $i >= $limit ) {
-            break;
-          }
-          $result = $results_array[$i];
+        foreach ( $results_array as $result ) {
 
           $single_entry_row = '<tr class="ugtc-single-entry-row">';
           $entry_name = '<td class="ugtc-single-entry-name"><a class="ugtc-single-entry ugtc-single-entry-link" href="' . $result['link'] . '">' . $result['name'] . '</a></td>';

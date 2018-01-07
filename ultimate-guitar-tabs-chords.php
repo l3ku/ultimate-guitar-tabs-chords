@@ -28,7 +28,6 @@
 defined( 'ABSPATH' ) or die( 'Access Denied!' );
 
 require_once( plugin_dir_path( __FILE__ ) . 'includes/ug-shortcode.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/ug-settings.php' );
 
 if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
 
@@ -43,12 +42,6 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
   class UG_Tabs_Chords {
 
     /**
-     * Settings handler for registering and providing functionality to settings.
-     * @var UG_Settings
-     */
-    private $ug_settings;
-
-    /**
      * Shortcode registration and functionality.
      * @var UG_Shortcode
      */
@@ -60,12 +53,10 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
     * @since 0.0.1
     */
     public function __construct() {
-      $this->ug_settings = new UG_Settings();
       $this->ug_shortcode = new UG_Shortcode();
 
-      add_action( 'plugins_loaded', array( $this, 'load_text_domain' ) );
+      add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-      add_action( 'admin_init', array( $this, 'register_settings' ) );
       add_action( 'admin_menu', array( $this, 'add_admin_pages' ) );
       add_action( 'init', array( $this, 'register_shortcode' ) );
       add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_settings_action_link' ) );
@@ -76,18 +67,8 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
     *
     * @since 0.0.1
     */
-    public function load_text_domain() {
+    public function load_textdomain() {
       load_plugin_textdomain( 'ug-tabs-chords', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-    }
-
-    /**
-     * Register plugin settings.
-     *
-     * @since 0.0.1
-     */
-    public function register_settings() {
-      $this->ug_settings->register_settings();
-      $this->ug_settings->add_settings_sections();
     }
 
     /**
@@ -137,22 +118,13 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
     * @since 0.0.1
     */
     public function add_admin_pages() {
-      add_menu_page(
-        __( 'UGTC', 'ug-tabs-chords' ),
-        __( 'UGTC', 'ug-tabs-chords' ),
+      add_options_page(
+        __( 'Ultimate Guitar Tabs & Chords', 'ug-tabs-chords' ),
+        __( 'UG Tabs & Chords', 'ug-tabs-chords' ),
         'manage_options',
         'ug_tabs_chords',
         array( $this, 'create_main_page' ),
         'dashicons-album'
-      );
-
-      add_submenu_page(
-        'ug_tabs_chords',
-        __( 'UGTC Search Settings', 'ug-tabs-chords' ),
-        __( 'Search Settings', 'ug-tabs-chords' ),
-        'manage_options',
-        'ug_tabs_chords_search_settings',
-        array( $this, 'create_search_settings_page' )
       );
     }
 
@@ -162,16 +134,7 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
     * @since 0.0.1
     */
     public function create_main_page() {
-      require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/main-page.php' );
-    }
-
-    /**
-    * Create the admin general settings page.
-    *
-    * @since 0.0.1
-    */
-    public function create_search_settings_page() {
-      require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/search-settings-page.php' );
+      require_once( plugin_dir_path( __FILE__ ) . 'includes/lib/main-page.php' );
     }
   }
 

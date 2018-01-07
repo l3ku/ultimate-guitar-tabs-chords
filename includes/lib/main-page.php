@@ -8,15 +8,24 @@
 defined( 'ABSPATH' ) or die( 'Access Denied!' );
 
 require_once( plugin_dir_path( __FILE__ ) . '../ug-shortcode.php' );
-require_once( plugin_dir_path( __FILE__ ) . '../ug-cache.php' );
+require_once( plugin_dir_path( __FILE__ ) . '/ug-cache.php' );
+require_once( plugin_dir_path( __FILE__ ) . '/ug-client-values.php' );
 
 // Generate shortcode on form submission, sanitize input and disallow HTML
-if ( isset( $_POST['ugtc_shortcode_artist'] ) && isset( $_POST['ugtc_shortcode_limit_results'] ) ) {
+if ( isset( $_POST['ugtc_generate_shortcode'] ) ) {
   $artist = trim( wp_kses( $_POST['ugtc_shortcode_artist'], array() ) );
-  $limit = trim( wp_kses( $_POST['ugtc_shortcode_limit_results'], array() ) );
+  $type = trim( wp_kses( $_POST['ugtc_shortcode_type'], array() ) );
+  $order = trim( wp_kses( $_POST['ugtc_shortcode_order'], array() ));
+  $limit = trim( wp_kses( $_POST['ugtc_shortcode_limit'], array() ) );
+  $data = array(
+    'artist' => $artist,
+    'type'   => $type,
+    'order'  => $order,
+    'limit'  => $limit
+  );
 
   // Generate shortcode and remove the artist from cache.
-  $gen_shortcode = UG_Shortcode::generate_shortcode( $artist, $limit );
+  $gen_shortcode = UG_Shortcode::generate_shortcode( $data );
   UG_Cache::remove_from_cache( $artist );
 }
 
@@ -55,16 +64,43 @@ if ( isset( $_POST['ugtc_shortcode_artist'] ) && isset( $_POST['ugtc_shortcode_l
         </tr>
         <tr>
           <th scope="row">
+            <?php _e( 'Type', 'ug-tabs-chords' ); ?>
+          </th>
+          <td>
+            <select name="ugtc_shortcode_type">
+              <?php $valid_type_values = ugtc_get_valid_types(); ?>
+              <?php foreach ( $valid_type_values as $key => $val ) : ?>
+                <option value="<?php echo $key; ?>"><?php echo $val; ?>
+              <?php endforeach; ?>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <?php _e( 'Order', 'ug-tabs-chords' ); ?>
+          </th>
+          <td>
+            <select name="ugtc_shortcode_order">
+              <?php $valid_order_values = ugtc_get_valid_orders(); ?>
+              <?php var_dump($valid_order_values); ?>
+              <?php foreach ( $valid_order_values as $key => $val ) : ?>
+                <option value="<?php echo $key; ?>"><?php echo $val; ?>
+              <?php endforeach; ?>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">
             <?php _e( 'Limit results', 'ug-tabs-chords' ); ?>
           </th>
           <td>
-            <input type="number" name="ugtc_shortcode_limit_results" placeholder="100" min="1" max="1000"
+            <input type="number" name="ugtc_shortcode_limit" placeholder="100" min="1" max="1000"
             <?php if ( isset( $limit ) ) echo 'value="' . $limit . '"'; ?>>
           </td>
         </tr>
         <tr>
           <td>
-            <input type="submit" class="button button-secondary" value="<?php _e( 'Generate Shortcode', 'ug-tabs-chords' ); ?>">
+            <input type="submit" class="button button-secondary" name="ugtc_generate_shortcode" value="<?php _e( 'Generate Shortcode', 'ug-tabs-chords' ); ?>">
           </td>
         </tr>
       </table>
@@ -77,7 +113,7 @@ if ( isset( $_POST['ugtc_shortcode_artist'] ) && isset( $_POST['ugtc_shortcode_l
             </code>
           <?php elseif ( is_wp_error( $gen_shortcode ) ): ?>
             <small class="ugtc-shortcode-generator-error">
-              <?php echo 'Error: ' . $gen_shortcode->get_error_message(); ?>
+              <?php echo sprintf( '%s: %s', __( 'Error', 'ug-tabs-chords' ), $gen_shortcode->get_error_message() ); ?>
             </small>
           <?php endif; ?>
         <?php endif; ?>
@@ -89,7 +125,7 @@ if ( isset( $_POST['ugtc_shortcode_artist'] ) && isset( $_POST['ugtc_shortcode_l
     <?php _e( 'Cache', 'ug-tabs-chords' ); ?>
   </h2>
   <p class="ugtc-instructions">
-    <?php _e( 'Ultimate Guitar Tabs & Chords uses the transient API of WordPress to cache data, resulting in much faster loading times. This might cause delay for your modifications to become visible, so be sure to empty the cache after modifications. ', 'ug-tabs-chords' ); ?>
+    <?php _e( 'Ultimate Guitar Tabs & Chords uses the transient API of WordPress to cache data from ultimate-guitar.com. This results as much faster page loading times, as the data is stored in the database instead of having to always make requests to external servers. The cache can be emptied by using the button below: ', 'ug-tabs-chords' ); ?>
   </p>
   <form id="ugtc-purge-cache-form" method="POST" action="">
     <input type="submit" name="ugtc_purge_cache" class="button button-secondary" value="<?php _e( 'Purge Cache', 'ug-tabs-chords' ); ?>">

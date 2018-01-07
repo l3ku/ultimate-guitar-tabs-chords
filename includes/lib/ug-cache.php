@@ -23,45 +23,50 @@ if ( ! class_exists( 'UG_Cache' ) ) {
 
     /**
      * Adds a cached entry by using the WP Transient API.
-     * @param string $entry_name The unique name to cache this entry with
+     *
+     * @param array $entry_atts The unique content attributes to base the cache
+     * key on
      * @param string $entry_value The content to cache
      * @param integer $time The expiration time in seconds for the cache entry,
      * default is 86400 seconds (24 hours)
      * TODO: Add an option to wp-admin for the user to specify the cache time.
      */
-    public static function add_to_cache( $entry_name, $entry_content, $time = 86400 ) {
+    public static function add_to_cache( $entry_atts, $entry_content, $time = 86400 ) {
       // Check if the entry is already cached and remove it
-      if ( false !== self::get_cached( $entry_name ) ) {
-        self::remove_from_cache( $entry_name );
+      if ( false !== self::get_cached( $entry_atts ) ) {
+        self::remove_from_cache( $entry_atts );
       }
 
-      $entry_clean = self::cache_key_format( $entry_name );
-      set_transient( 'ugtc_artist_entries_' . $entry_clean, $entry_content, $time );
+      $entry_hash = self::create_cache_key( $entry_atts );
+      set_transient( 'ugtc_artist_entries_' . $entry_hash, $entry_content, $time );
     }
 
     /**
-     * Gets the cached key if exists,
+     * Gets the cached entries by attributes if exists.
      *
-     * @param string $entry_name The name of the entry to check
+     * @param array $entry_atts The unique content cache key
      * @return boolean The cached value for $entry_name, false if the no
      * cached value was found
      */
-    public static function get_cached( $entry_name ) {
-      $entry_clean = self::cache_key_format( $entry_name );
-      $cached_entries = get_transient( 'ugtc_artist_entries_' . $entry_clean );
+    public static function get_cached( $entry_atts ) {
+      $entry_hash = self::create_cache_key( $entry_atts );
+      $cached_entries = get_transient( 'ugtc_artist_entries_' . $entry_hash );
 
-      if ( false === $cached_entries ) return false;
+      if ( false === $cached_entries ) {
+        return false;
+      }
       return $cached_entries;
     }
 
     /**
      * Removes an entry from the cache.
-     * @param  string $entry_name The unique name of the entry
+     *
+     * @param array $entry_atts The unique content cache key
      * @return bool True on success, false otherwise
      */
-    public static function remove_from_cache( $entry_name ) {
-      $entry_clean = self::cache_key_format( $entry_name );
-      return delete_transient( $entry_clean );
+    public static function remove_from_cache( $entry_atts ) {
+      $entry_hash = self::create_cache_key( $entry_atts );
+      return delete_transient( $entry_hash );
     }
 
     /**
@@ -84,14 +89,13 @@ if ( ! class_exists( 'UG_Cache' ) ) {
     }
 
     /**
-     * Strip all whitespace and transform to lowercase with underscores to
-     * obtain a more cacheable format for entry keys.
-     * @param  string $to_format The string to format
-     * @return string $formatted The formatted string
+     * Create a cache key (md5 hash) based on the attributes provided.
+     *
+     * @param  string $atts The string to create the cache key from
+     * @return $string The cache key
      */
-    public static function cache_key_format( $to_format ) {
-      $formatted = strtolower( preg_replace( '/\s+/', '_', trim( $to_format ) ) );
-      return $formatted;
+    public static function create_cache_key( $atts ) {
+      return md5( json_encode( $atts ) );
     }
   }
 }

@@ -4,22 +4,20 @@
 [![Latest Unstable Version](https://poser.pugx.org/l3ku/ultimate-guitar-tabs-chords/v/unstable)](https://packagist.org/packages/l3ku/ultimate-guitar-tabs-chords)
 [![License](https://poser.pugx.org/l3ku/ultimate-guitar-tabs-chords/license)](https://packagist.org/packages/l3ku/ultimate-guitar-tabs-chords)
 
-A WordPress plugin that fetches tabs and chords from Ultimate Guitar.
+A WordPress plugin that fetches tabs and chords from Ultimate Guitar by scraping HTML.
 
 ## Installation
 
-This plugin is yet not available via wordpress.org. Installation begins by navigating to the WordPress plugins directory and cloning the plugin git repository by cloning this project from GitHub:
+This plugin is yet not available via the wordpress.org plugins directory. Installation is done by navigating to the WordPress plugins directory and cloning the plugin git repository by cloning this project from GitHub:
 ```git clone git@github.com:l3ku/ultimate-guitar-tabs-chords.git```.
 
 If Composer is used in your project, this plugin can also be included by running `composer require l3ku/ultimate-guitar-tabs-chords`.
 
-The plugin should now be available for activation in the WordPress admin plugins page. After activation, a new admin menu link with the text "UGTC" should be available, which provides access to all plugin settings pages.
+The plugin should now be available for activation in the WordPress admin plugins page. After activation, a new settings page (under "Settings") should be available with the name `UG Tabs & Chords`.
 
 ## Usage
-Specify your content search settings from `UGTC->Search Settings` (e.g. whether
-to show tabs and/or chords and how to order them).
 
-Add the plugin shortcode to the desired page or post. You can generate the plugin shortcode by using the shortcode generator available on the main plugin page.
+Add the plugin shortcode to the desired page or post. You can generate the plugin shortcode by using the shortcode generator available on the plugin settings page.
 
 ## Tests
 PHPUnit based unit tests are included in this project in the `tests/` directory. Before running the tests, install the WordPress test suite by running the installation script in the plugin directory:

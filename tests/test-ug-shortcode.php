@@ -13,7 +13,7 @@ class Test_UG_Shortcode extends WP_UnitTestCase {
   * Init test case.
   */
   public function test_ug_shortcode_init() {
-   $ug_shortcode = new UG_Shortcode();
+   $ug_shortcode = new UG_Shortcode;
    return $ug_shortcode;
   }
 
@@ -39,14 +39,16 @@ class Test_UG_Shortcode extends WP_UnitTestCase {
   public function test_ug_shortcode_generate( $instance ) {
     $instance->register_shortcode();
 
-    // Test that providing no artist at all causes an error
-    $this->assertTrue( is_wp_error( $instance->generate_shortcode( '', 0 ) ) );
+    // Test that providing no type causes an error
+    $this->assertTrue( is_wp_error( UG_Shortcode::generate_shortcode( array( 'artist' => 'Crap Artist' ) ) ) );
 
     // Test with valid values
-    $test_artist = 'Test';
-    $test_limit = 50;
-    $result = $instance->generate_shortcode( $test_artist, $test_limit );
-    $this->assertEquals( $result, '[ug-tabs-chords artist="Test" limit="50"]' );
+    $test_values = array(
+      'artist' => 'Crap Artist',
+      'type'   => 'ukulele'
+    );
+    $result = $instance->generate_shortcode( $test_values );
+    $this->assertEquals( $result, '[ug-tabs-chords artist="' . $test_values['artist'] . '" type="' . $test_values['type'] . '"]' );
   }
 
   /**

@@ -18,46 +18,24 @@ class Test_UG_Client extends WP_UnitTestCase {
   }
 
   /**
-  * Test that the type 1 search parameter values are set correctly.
+  * Test that the type parameter values are set correctly.
   *
   * @depends test_ug_client_init
   */
-  public function test_ug_client_type_1( $client ) {
+  public function test_ug_client_type( $client ) {
     // Test default settings
-    $default_settings_reference = array( 200, 300 );
-    $default_settings = $client->get_type_1();
+    $default_settings_reference = 'tabs';
+    $default_settings = $client->get_type();
     $this->assertEquals( $default_settings_reference, $default_settings );
 
-    // Test setting type 1 with an invalid value (9999)
-    $type_1_invalid_values = array ( 9999, 200 );
-    $response = $client->set_type_1( $type_1_invalid_values );
+    // Test setting type with an invalid value
+    $type_invalid_value = 'pork_chops';
+    $response = $client->set_type( $type_invalid_value );
     $this->assertEquals( true, is_wp_error( $response ) );
 
-    // Test setting type 1 to allowed values
-    $type_1_allowed_values = array( 500, 600, 700, 800, 900 );
-    $response = $client->set_type_1( $type_1_allowed_values );
-    $this->assertEquals( true, $response );
-  }
-
-  /**
-  * Test that the type 2 search parameter values are set correctly.
-  *
-  * @depends test_ug_client_init
-  */
-  public function test_ug_client_type_2( $client ) {
-    // Test default settings
-    $default_settings_reference = array( 40000 );
-    $default_settings = $client->get_type_2();
-    $this->assertEquals( $default_settings_reference, $default_settings );
-
-    // Test setting type 2 with an invalid value (9999)
-    $type_2_invalid_values = array ( 20000, 30000, 9999 );
-    $response = $client->set_type_2( $type_2_invalid_values );
-    $this->assertEquals( true, is_wp_error( $response ) );
-
-    // Test setting type 1 to allowed values
-    $type_2_allowed_values = array( 20000, 30000, 40000 );
-    $response = $client->set_type_2( $type_2_allowed_values );
+    // Test setting type to allowed value
+    $type_allowed_value = 'ukulele';
+    $response = $client->set_type( $type_allowed_value );
     $this->assertEquals( true, $response );
   }
 
@@ -68,7 +46,7 @@ class Test_UG_Client extends WP_UnitTestCase {
   */
   public function test_ug_client_order($client ) {
     // Test default settings
-    $default_settings_reference = 'myweight';
+    $default_settings_reference = 'title_srt';
     $default_settings = $client->get_order();
     $this->assertEquals( $default_settings_reference, $default_settings );
 
@@ -78,7 +56,7 @@ class Test_UG_Client extends WP_UnitTestCase {
     $this->assertEquals( true, is_wp_error( $response ) );
 
     // Test setting order to allowed values
-    $order_allowed_value = 'title_srt';
+    $order_allowed_value = 'date';
     $response = $client->set_order( $order_allowed_value );
     $this->assertEquals( true, $response );
   }

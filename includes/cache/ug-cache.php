@@ -40,7 +40,7 @@ if ( ! class_exists( 'UG_Cache' ) ) {
       }
 
       $entry_hash = self::create_cache_key( $entry_atts );
-      set_transient( 'ugtc_artist_entries_' . $entry_hash, $entry_content, $time );
+      set_transient( $entry_hash, $entry_content, $time );
     }
 
     /**
@@ -52,7 +52,7 @@ if ( ! class_exists( 'UG_Cache' ) ) {
      */
     public static function get_cached( $entry_atts ) {
       $entry_hash = self::create_cache_key( $entry_atts );
-      $cached_entries = get_transient( 'ugtc_artist_entries_' . $entry_hash );
+      $cached_entries = get_transient( $entry_hash );
 
       if ( false === $cached_entries ) {
         return false;
@@ -97,7 +97,7 @@ if ( ! class_exists( 'UG_Cache' ) ) {
      * @return $string The cache key
      */
     public static function create_cache_key( $atts ) {
-      return md5( json_encode( $atts ) );
+      return 'ugtc_artist_entries_' . md5( json_encode( $atts ) );
     }
   }
 }

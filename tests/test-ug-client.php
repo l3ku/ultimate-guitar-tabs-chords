@@ -1,4 +1,7 @@
 <?php
+
+use UGTC\Client\UG_Client;
+
 /**
 * Class Test_UG_Client
 *
@@ -13,7 +16,7 @@ class Test_UG_Client extends WP_UnitTestCase {
   * Init test case.
   */
   public function test_ug_client_init() {
-   $ug_client = new UGTC\Client\UG_Client;
+   $ug_client = new UG_Client;
    return $ug_client;
   }
 

@@ -1,4 +1,7 @@
 <?php
+
+use UGTC\Shortcode\UG_Shortcode;
+
 /**
 * Class Test_UG_Shortcode
 *
@@ -13,8 +16,8 @@ class Test_UG_Shortcode extends WP_UnitTestCase {
   * Init test case.
   */
   public function test_ug_shortcode_init() {
-   $ug_shortcode = new UGTC\Shortcode\UG_Shortcode;
-   return $ug_shortcode;
+    $ug_shortcode = new UG_Shortcode;
+    return $ug_shortcode;
   }
 
   /**
@@ -62,7 +65,8 @@ class Test_UG_Shortcode extends WP_UnitTestCase {
     remove_shortcode( 'ug-tabs-chords' );
     $this->assertTrue( is_wp_error( $instance->create_shortcode( array(), array() ) ) );
 
-    // TODO: Test with valid values
+    $instance->register_shortcode();
+    $this->assertTrue( shortcode_exists( 'ug-tabs-chords' ) );
   }
 
 }

@@ -5,11 +5,15 @@
 * @package ug-tabs-chords
 */
 
-defined( 'ABSPATH' ) or die( 'Access Denied!' );
+defined( 'ABSPATH' ) or die( 'Access Denied!' ); // Prevent direct access
 
-require_once( plugin_dir_path( __FILE__ ) . '../ug-shortcode.php' );
-require_once( plugin_dir_path( __FILE__ ) . '/ug-cache.php' );
-require_once( plugin_dir_path( __FILE__ ) . '/ug-client-values.php' );
+require_once( plugin_dir_path( __FILE__ ) . '../shortcode/ug-shortcode.php' );
+require_once( plugin_dir_path( __FILE__ ) . '../cache/ug-cache.php' );
+require_once( plugin_dir_path( __FILE__ ) . '../client/ug-client-values.php' );
+
+use UGTC\Shortcode\UG_Shortcode;
+use UGTC\Cache\UG_Cache;
+use UGTC\Client;
 
 // Generate shortcode on form submission, sanitize input and disallow HTML
 if ( isset( $_POST['ugtc_generate_shortcode'] ) ) {
@@ -68,7 +72,7 @@ if ( isset( $_POST['ugtc_generate_shortcode'] ) ) {
           </th>
           <td>
             <select name="ugtc_shortcode_type">
-              <?php $valid_type_values = ugtc_get_valid_types(); ?>
+              <?php $valid_type_values = Client\ugtc_get_valid_types(); ?>
               <?php foreach ( $valid_type_values as $key => $val ) : ?>
                 <option value="<?php echo $key; ?>"><?php echo $val; ?>
               <?php endforeach; ?>
@@ -81,8 +85,7 @@ if ( isset( $_POST['ugtc_generate_shortcode'] ) ) {
           </th>
           <td>
             <select name="ugtc_shortcode_order">
-              <?php $valid_order_values = ugtc_get_valid_orders(); ?>
-              <?php var_dump($valid_order_values); ?>
+              <?php $valid_order_values = Client\ugtc_get_valid_orders(); ?>
               <?php foreach ( $valid_order_values as $key => $val ) : ?>
                 <option value="<?php echo $key; ?>"><?php echo $val; ?>
               <?php endforeach; ?>

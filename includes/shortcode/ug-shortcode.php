@@ -6,10 +6,16 @@
 * @package ug-tabs-chords
 */
 
-defined( 'ABSPATH' ) or die( 'Access Denied!' );
+namespace UGTC\Shortcode;
 
-require_once( plugin_dir_path( __FILE__ ) . '/lib/ug-cache.php' );
-require_once( plugin_dir_path( __FILE__ ) . '/ug-client.php' );
+defined( 'ABSPATH' ) or die( 'Access Denied!' ); // Prevent direct access
+
+require_once( plugin_dir_path( __FILE__ ) . 'ug-shortcode-base.php' );
+require_once( plugin_dir_path( __FILE__ ) . '../cache/ug-cache.php' );
+require_once( plugin_dir_path( __FILE__ ) . '../client/ug-client.php' );
+
+use \UGTC\Cache\UG_Cache;
+use \WP_Error;
 
 if ( ! class_exists( 'UG_Shortcode' ) ) {
 
@@ -21,7 +27,7 @@ if ( ! class_exists( 'UG_Shortcode' ) ) {
   * @since 0.0.1
   * @author Leo Toikka
   */
-  class UG_Shortcode {
+  class UG_Shortcode implements UG_Shortcode_Base {
 
     /**
      * The name of the plugin shortcode.
@@ -45,7 +51,7 @@ if ( ! class_exists( 'UG_Shortcode' ) ) {
      * Initialize the class.
      */
     public function __construct() {
-      $this->ug_client = new UG_Client();
+      $this->ug_client = new \UGTC\Client\UG_Client();
     }
 
     /**
@@ -64,6 +70,7 @@ if ( ! class_exists( 'UG_Shortcode' ) ) {
 
     /**
      * Return the valid shortcode attributes/keys in a whitelist array.
+     *
      * @return array string The whitelist of valid shortcode attributes/keys.
      */
     public static function get_shortcode_whitelist() {
@@ -72,6 +79,7 @@ if ( ! class_exists( 'UG_Shortcode' ) ) {
 
     /**
      * Generate the required shortcode string from parameters.
+     *
      * @param array mixed $attributes Array of attributes to specify content:
      * 'artist' (required), 'type' (required), 'order' (optional), 'limit' (optional)
      * @return mixed Shortcode string on success, WP_Error object in case of an
@@ -112,19 +120,22 @@ if ( ! class_exists( 'UG_Shortcode' ) ) {
 
     /**
      * Display shortcode functionality in the frontend side.
+     *
      * @param array $atts Shortcode attributes
      * @param string $content Shortcode content
-     * @return string HTML content from Ultimate Guitar or WP_Error if the
-     * shortcode has not been registered
+     * @param string $html_strategy The output strategy used to generate HTML. Default
+     * value is 'table', currently no other format is supported
+     * @return string HTML content from Ultimate Guitar or WP_Error in case of
+     * an error
      */
-    public function create_shortcode( $atts, $content ) {
+    public function create_shortcode( $atts, $content, $html_strategy = 'table' ) {
       // Check that the shortcode exists
       if ( ! shortcode_exists( 'ug-tabs-chords' ) ) {
 
         return new WP_Error(
           'ugtc_shortcode_not_registered',
           sprintf(
-            __( 'Ultimate-Guitar Tabs & Chords: error with registering shortcode "%s"' ),
+            __( 'Ultimate-Guitar Tabs & Chords: error with registering shortcode "%s"', 'ug-tabs-chords' ),
             self::$ug_shortcode_str
           )
         );
@@ -162,9 +173,21 @@ if ( ! class_exists( 'UG_Shortcode' ) ) {
 
       // Create HTML table containing the results
       // TODO: Provide functionality to choose display layout type
-      $artist_table_html = $this->shortcode_html_table( $results );
-      $artist_div .= $artist_table_html . '</div>';
+      if ( 'table' ===  $html_strategy ) {
+        $artist_table_html = $this->shortcode_html_table( $results );
 
+      } else {
+        // Return WP_Error on unknow strategy
+        return new WP_Error(
+          'ugtc_shortcode_unknown_html_strategy',
+          sprintf(
+            __( 'Ultimate-Guitar Tabs & Chords: unknown shortcode HTML strategy "%s"', 'ug-tabs-chords' ),
+            $strategy
+          )
+        );
+      }
+
+      $artist_div .= $artist_table_html . '</div>';
       return $artist_div;
     }
 

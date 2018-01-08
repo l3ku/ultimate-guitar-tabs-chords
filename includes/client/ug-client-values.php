@@ -5,7 +5,9 @@
 * @package ug-tabs-chords
 */
 
-defined( 'ABSPATH' ) or die( 'Access Denied!' );
+namespace UGTC\Client;
+
+defined( 'ABSPATH' ) or die( 'Access Denied!' ); // Prevent direct access
 
 /**
  * Get valid content type values.

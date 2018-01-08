@@ -5,10 +5,14 @@
 * @package ug-tabs-chords
 */
 
-defined( 'ABSPATH' ) or die( 'Access Denied!' );
+namespace UGTC\Client;
 
-require_once( plugin_dir_path( __FILE__ ) . '/lib/ug-client-values.php' );
-require_once( plugin_dir_path( __FILE__ ) . '/lib/ug-api.php' );
+defined( 'ABSPATH' ) or die( 'Access Denied!' ); // Prevent direct access
+
+require_once( plugin_dir_path( __FILE__ ) . 'ug-client-values.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'api/ug-api.php' );
+
+use \WP_Error;
 
 if ( ! class_exists( 'UG_Client' ) ) {
 
@@ -38,7 +42,7 @@ if ( ! class_exists( 'UG_Client' ) ) {
     * @since 0.0.1
     */
     public function __construct() {
-      $this->ug_api = new UG_API;
+      $this->ug_api = new API\UG_API;
       $this->set_default_params(); // Set defaults
     }
 

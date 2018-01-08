@@ -5,10 +5,13 @@
 * @package ug-tabs-chords
 */
 
-defined( 'ABSPATH' ) or die( 'Access Denied!' );
+namespace UGTC\Client\API;
 
-require_once( plugin_dir_path( __FILE__ ) . '../../vendor/autoload.php' );
-use simplehtmldom_1_5\simple_html_dom as Html_Dom;
+defined( 'ABSPATH' ) or die( 'Access Denied!' ); // Prevent direct access
+
+require_once( plugin_dir_path( __FILE__ ) . '../../../vendor/autoload.php' );
+
+use \simplehtmldom_1_5\simple_html_dom as Html_Dom;
 
 if ( ! class_exists( 'UG_API' ) ) {
 
@@ -141,12 +144,13 @@ if ( ! class_exists( 'UG_API' ) ) {
 
       // Check if sort method is set (not mandatory). Default is title_srt, so
       // only include the sort method if it is different
-      if ( isset( $content_params['sort'] ) && ! empty( $content_params['sort'] )
-        && 'title_srt' !== strtolower( trim( $content_params['sort'] ) ) )
+      if ( isset( $content_params['order'] ) && ! empty( $content_params['order'] )
+        && 'title_srt' !== strtolower( trim( $content_params['order'] ) ) )
       {
-        $sort_formatted = strtolower( trim( $content_params['sort'] ) );
+        $sort_formatted = strtolower( trim( $content_params['order'] ) );
         $query_string .= '?sort=' . $sort_formatted;
       }
+      error_log($query_string);
 
       return $query_string;
     }

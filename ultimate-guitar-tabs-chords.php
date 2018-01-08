@@ -25,9 +25,11 @@
 *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+namespace UGTC;
+
 defined( 'ABSPATH' ) or die( 'Access Denied!' );
 
-require_once( plugin_dir_path( __FILE__ ) . 'includes/ug-shortcode.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/shortcode/ug-shortcode.php' );
 
 if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
 
@@ -42,10 +44,10 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
   class UG_Tabs_Chords {
 
     /**
-     * Shortcode registration and functionality.
-     * @var UG_Shortcode
+     * All shortcode objects in an array.
+     * @var array UG_Shortcode_Base
      */
-    private $ug_shortcode;
+    private $ug_shortcodes = array();
 
     /**
     * Initialize the plugin.
@@ -53,12 +55,12 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
     * @since 0.0.1
     */
     public function __construct() {
-      $this->ug_shortcode = new UG_Shortcode();
+      $this->ug_shortcodes[] = new Shortcode\UG_Shortcode();
 
       add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
       add_action( 'admin_menu', array( $this, 'add_admin_pages' ) );
-      add_action( 'init', array( $this, 'register_shortcode' ) );
+      add_action( 'init', array( $this, 'register_shortcodes' ) );
       add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_settings_action_link' ) );
     }
 
@@ -72,12 +74,17 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
     }
 
     /**
-    * Register plugin shortcode.
+    * Register plugin shortcodes.
     *
     * @since 0.0.1
     */
-    public function register_shortcode() {
-      $this->ug_shortcode->register_shortcode();
+    public function register_shortcodes() {
+      if ( ! empty( $this->ug_shortcodes ) ) {
+
+        foreach ( $this->ug_shortcodes as $shortcode ) {
+          $shortcode->register_shortcode();
+        }
+      }
     }
 
     /**
@@ -123,8 +130,7 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
         __( 'UG Tabs & Chords', 'ug-tabs-chords' ),
         'manage_options',
         'ug_tabs_chords',
-        array( $this, 'create_main_page' ),
-        'dashicons-album'
+        array( $this, 'create_main_page' )
       );
     }
 
@@ -134,7 +140,7 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
     * @since 0.0.1
     */
     public function create_main_page() {
-      require_once( plugin_dir_path( __FILE__ ) . 'includes/lib/main-page.php' );
+      require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/main-page.php' );
     }
   }
 

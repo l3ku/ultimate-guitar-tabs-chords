@@ -6,7 +6,9 @@
 * @package ug-tabs-chords
 */
 
-defined( 'ABSPATH' ) or die( 'Access Denied!' );
+namespace UGTC\Cache;
+
+defined( 'ABSPATH' ) or die( 'Access Denied!' ); // Prevent direct access
 
 if ( ! class_exists( 'UG_Cache' ) ) {
 

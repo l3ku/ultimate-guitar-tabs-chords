@@ -13,7 +13,7 @@ class Test_UG_Shortcode extends WP_UnitTestCase {
   * Init test case.
   */
   public function test_ug_shortcode_init() {
-   $ug_shortcode = new UG_Shortcode;
+   $ug_shortcode = new UGTC\Shortcode\UG_Shortcode;
    return $ug_shortcode;
   }
 

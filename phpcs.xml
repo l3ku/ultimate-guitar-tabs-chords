@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<ruleset name="L3ku">
+  <description>Coding standards for my own project.</description>
+
+  <!-- show progress -->
+  <arg value="p"/>
+
+  <!-- check current and all subfolders if no file parameter given -->
+  <file>.</file>
+
+  <!-- Don't check dependencies and extras -->
+  <exclude-pattern>/vendor/</exclude-pattern>
+
+  <rule ref="Squiz.PHP.CommentedOutCode"/>
+  <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
+  <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+  <rule ref="Generic.ControlStructures.InlineControlStructure"/>
+  <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
+  <rule ref="Generic.PHP.LowerCaseConstant"/>
+  <rule ref="Generic.Classes.OpeningBraceSameLine"/>
+  <rule ref="PSR2.ControlStructures.ElseIfDeclaration"/>
+  <rule ref="Squiz.Functions.LowercaseFunctionKeywords"/>
+  <rule ref="Squiz.Commenting.DocCommentAlignment"/>
+
+  <rule ref="WordPress-Extra">
+   <exclude name="PSR2.ControlStructures.SwitchDeclaration"/>
+   <exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/>
+   <exclude name="Generic.WhiteSpace.ScopeIndent"/>
+   <exclude name="PEAR.Functions.FunctionCallSignature.SpaceAfterOpenBracket" />
+   <exclude name="PEAR.Functions.FunctionCallSignature.SpaceBeforeCloseBracket" />
+   <exclude name="PEAR.Functions.FunctionCallSignature.OpeningIndent" />
+   <exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
+   <exclude name="WordPress.WhiteSpace.PrecisionAlignment.Found" />
+   <exclude name="WordPress.Arrays.ArrayDeclaration.IndexNoNewline" />
+   <exclude name="WordPress.Arrays.ArrayIndentation.ItemNotAligned"/>
+   <exclude name="WordPress.Arrays.ArrayIndentation.MultiLineArrayItemNotAligned"/>
+   <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions.NoSpacesAroundArrayKeys" />
+   <exclude name="WordPress.PHP.YodaConditions" />
+   <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+   <exclude name="WordPress.XSS.EscapeOutput.OutputNotEscaped" />
+  </rule>
+</ruleset>

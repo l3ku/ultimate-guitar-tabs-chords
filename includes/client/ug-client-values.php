@@ -1,13 +1,15 @@
 <?php
 /**
-* Ultimate Guitar client valid values.
-*
-* @package ug-tabs-chords
-*/
+ * Ultimate Guitar client valid values.
+ *
+ * @package ug-tabs-chords
+ */
 
 namespace UGTC\Client;
 
-defined( 'ABSPATH' ) or die( 'Access Denied!' ); // Prevent direct access
+if ( ! defined( 'ABSPATH' ) ) {
+  die( 'Access Denied!' );
+}
 
 /**
  * Get valid content type values.
@@ -45,6 +47,6 @@ function ugtc_get_valid_ratings() {
 function ugtc_get_valid_orders() {
   return array(
     'title_srt' => __( 'Title ABC', 'ug-tabs-chords' ),
-    'date'      => __( 'Date', 'ug-tabs-chords' )
+    'date'      => __( 'Date', 'ug-tabs-chords' ),
   );
 }

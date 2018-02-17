@@ -3,24 +3,24 @@
 use UGTC\Cache\UG_Cache;
 
 /**
-* Class Test_UG_Cache
-*
-* @package ug-tabs-chords
-* @version  0.0.1
-* @since 0.0.1
-* @author Leo Toikka
-*/
+ * Class Test_UG_Cache
+ *
+ * @package ug-tabs-chords
+ * @version  0.0.1
+ * @since 0.0.1
+ * @author Leo Toikka
+ */
 class Test_UG_Cache extends WP_UnitTestCase {
 
   /**
-  * Init test case, return test attributes.
-  */
+   * Init test case, return test attributes.
+   */
   public function test_ug_cache_init() {
     return array(
       'artist' => 'Crap Artist',
       'type'   => 'tabs',
       'order'  => 'title_srt',
-      'limit'  => '20'
+      'limit'  => '20',
     );
   }
 
@@ -61,7 +61,8 @@ class Test_UG_Cache extends WP_UnitTestCase {
     UG_Cache::add_to_cache( $attributes, $data, 20 );
 
     UG_Cache::purge_cache();
-    $ug_transients = $wpdb->get_results("SELECT option_name FROM ". $wpdb->options .
+    $ug_transients = $wpdb->get_results(
+        'SELECT option_name FROM ' . $wpdb->options .
       " WHERE option_name LIKE '_transient_%ugtc_%'"
     );
 

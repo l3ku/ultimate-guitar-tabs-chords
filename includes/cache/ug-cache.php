@@ -1,26 +1,28 @@
 <?php
 /**
-* File for caching the data retreived by UG_Client from Ultimate Guitar. Caching
-* is done to minimize requests to external sites and improve load times.
-*
-* @package ug-tabs-chords
-*/
+ * File for caching the data retreived by UG_Client from Ultimate Guitar. Caching
+ * is done to minimize requests to external sites and improve load times.
+ *
+ * @package ug-tabs-chords
+ */
 
 namespace UGTC\Cache;
 
-defined( 'ABSPATH' ) or die( 'Access Denied!' ); // Prevent direct access
+if ( ! defined( 'ABSPATH' ) ) {
+  die( 'Access Denied!' );
+}
 
 if ( ! class_exists( 'UG_Cache' ) ) {
 
   /**
-  * Class UG_Cache is responsible for providing an interface to WP_Transient
-  * API for caching data.
-  *
-  * @package ug-tabs-chords
-  * @version  0.0.1
-  * @since 0.0.1
-  * @author Leo Toikka
-  */
+   * Class UG_Cache is responsible for providing an interface to WP_Transient
+   * API for caching data.
+   *
+   * @package ug-tabs-chords
+   * @version  0.0.1
+   * @since 0.0.1
+   * @author Leo Toikka
+   */
   class UG_Cache {
 
     /**
@@ -51,7 +53,7 @@ if ( ! class_exists( 'UG_Cache' ) ) {
      * cached value was found
      */
     public static function get_cached( $entry_atts ) {
-      $entry_hash = self::create_cache_key( $entry_atts );
+      $entry_hash     = self::create_cache_key( $entry_atts );
       $cached_entries = get_transient( $entry_hash );
 
       if ( false === $cached_entries ) {
@@ -79,7 +81,7 @@ if ( ! class_exists( 'UG_Cache' ) ) {
 
       // NOTE: Check if this is a potential SQL injection hole?
       $ug_transients = $wpdb->get_results(
-        "SELECT option_name FROM ". $wpdb->options ." WHERE option_name LIKE '_transient_%ugtc_%'"
+        'SELECT option_name FROM ' . $wpdb->options . " WHERE option_name LIKE '_transient_%ugtc_%'"
       );
 
       // Remove all found transients
@@ -97,7 +99,7 @@ if ( ! class_exists( 'UG_Cache' ) ) {
      * @return $string The cache key
      */
     public static function create_cache_key( $atts ) {
-      return 'ugtc_artist_entries_' . md5( json_encode( $atts ) );
+      return 'ugtc_artist_entries_' . md5( wp_json_encode( $atts ) );
     }
   }
 }

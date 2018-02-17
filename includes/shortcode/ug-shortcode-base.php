@@ -1,31 +1,33 @@
 <?php
 /**
-* Interface for plugin shortcode files.
-*
-* @package ug-tabs-chords
-*/
+ * Interface for plugin shortcode files.
+ *
+ * @package ug-tabs-chords
+ */
 
 namespace UGTC\Shortcode;
 
-defined( 'ABSPATH' ) or die( 'Access Denied!' ); // Prevent direct access
+if ( ! defined( 'ABSPATH' ) ) {
+  die( 'Access Denied!' );
+}
 
 if ( ! class_exists( 'UG_Shortcode_Base' ) ) {
 
   /**
-  * Interface UG_Shortcode_Base Defines the interface for all plugin shortcodes.
-  *
-  * @package ug-tabs-chords
-  * @version  0.0.1
-  * @since 0.0.1
-  * @author Leo Toikka
-  */
+   * Interface UG_Shortcode_Base Defines the interface for all plugin shortcodes.
+   *
+   * @package ug-tabs-chords
+   * @version  0.0.1
+   * @since 0.0.1
+   * @author Leo Toikka
+   */
   interface UG_Shortcode_Base {
 
     /**
-    * Register plugin shortcode.
-    *
-    * @since 0.0.1
-    */
+     * Register plugin shortcode.
+     *
+     * @since 0.0.1
+     */
     public function register_shortcode();
 
     /**

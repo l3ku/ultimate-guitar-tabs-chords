@@ -1,35 +1,37 @@
 <?php
 /**
-* Plugin Name: Ultimate Guitar Tabs & Chords
-* Plugin URI: https://github.com/l3ku/ultimate-guitar-tabs-chords
-* Author: Leo Toikka & Antti Kymén
-* Description: Fetches tabs and chords from Ultimate Guitar
-* Author URI: https://github.com/l3ku
-* Version: 0.0.1
-* Text Domain: ug-tabs-chords
-* License: GPLv3
-*
-*
-* Copyright 2017 Leo Toikka & Antti Kymén
-*   This program is free software; you can redistribute it and/or modify
-*   it under the terms of the GNU General Public License, version 3, as
-*   published by the Free Software Foundation.
-*
-*   This program is distributed in the hope that it will be useful,
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-*   GNU General Public License for more details.
+ * Plugin Name: Ultimate Guitar Tabs & Chords
+ * Plugin URI: https://github.com/l3ku/ultimate-guitar-tabs-chords
+ * Author: Leo Toikka & Antti Kymén
+ * Description: Fetches tabs and chords from Ultimate Guitar
+ * Author URI: https://github.com/l3ku
+ * Version: 0.0.1
+ * Text Domain: ug-tabs-chords
+ * License: GPLv3
+ *
+ *
+ * Copyright 2017 Leo Toikka & Antti Kymén
+ *   This program is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License, version 3, as
+ *   published by the Free Software Foundation.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *   GNU General Public License for more details.
 
-*   You should have received a copy of the GNU General Public License
-*   along with this program; if not, write to the Free Software
-*   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 
 namespace UGTC;
 
-defined( 'ABSPATH' ) or die( 'Access Denied!' );
+if ( ! defined( 'ABSPATH' ) ) {
+  die( 'Access Denied!' );
+}
 
-require_once( plugin_dir_path( __FILE__ ) . 'includes/shortcode/ug-shortcode.php' );
+require_once plugin_dir_path( __FILE__ ) . 'includes/shortcode/ug-shortcode.php';
 
 if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
 
@@ -50,10 +52,10 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
     private $ug_shortcodes = array();
 
     /**
-    * Initialize the plugin.
-    *
-    * @since 0.0.1
-    */
+     * Initialize the plugin.
+     *
+     * @since 0.0.1
+     */
     public function __construct() {
       $this->ug_shortcodes[] = new Shortcode\UG_Shortcode();
 
@@ -65,19 +67,19 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
     }
 
     /**
-    * Load plugin textdomain.
-    *
-    * @since 0.0.1
-    */
+     * Load plugin textdomain.
+     *
+     * @since 0.0.1
+     */
     public function load_textdomain() {
       load_plugin_textdomain( 'ug-tabs-chords', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     }
 
     /**
-    * Register plugin shortcodes.
-    *
-    * @since 0.0.1
-    */
+     * Register plugin shortcodes.
+     *
+     * @since 0.0.1
+     */
     public function register_shortcodes() {
       if ( ! empty( $this->ug_shortcodes ) ) {
 
@@ -104,26 +106,26 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
       }
 
       $settings_link = array( '<a href="' . $admin_link . '"">' . __( 'Settings' ) . '</a>' );
-      $new_links = array_merge( $links, $settings_link );
+      $new_links     = array_merge( $links, $settings_link );
 
       return $new_links;
     }
 
     /**
-    * Enqueue plugin scripts and styles.
-    *
-    * @since 0.0.1
-    */
+     * Enqueue plugin scripts and styles.
+     *
+     * @since 0.0.1
+     */
     public function enqueue_scripts() {
       wp_enqueue_style( 'ug-tabs-chords', plugins_url( '/assets/css/ug-tabs-chords.css', __FILE__ ) );
     }
 
     /**
-    * Add a settings page to WP Admin under "Settings" if the current user
-    * has manage options capabilitiess.
-    *
-    * @since 0.0.1
-    */
+     * Add a settings page to WP Admin under "Settings" if the current user
+     * has manage options capabilitiess.
+     *
+     * @since 0.0.1
+     */
     public function add_admin_pages() {
       add_options_page(
         __( 'Ultimate Guitar Tabs & Chords', 'ug-tabs-chords' ),
@@ -135,12 +137,12 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
     }
 
     /**
-    * Create the admin plugin main page.
-    *
-    * @since 0.0.1
-    */
+     * Create the admin plugin main page.
+     *
+     * @since 0.0.1
+     */
     public function create_main_page() {
-      require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/main-page.php' );
+      require_once plugin_dir_path( __FILE__ ) . 'includes/templates/main-page.php';
     }
   }
 

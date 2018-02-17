@@ -3,20 +3,20 @@
 use UGTC\Shortcode\UG_Shortcode;
 
 /**
-* Class Test_UG_Shortcode
-*
-* @package ug-tabs-chords
-* @version  0.0.1
-* @since 0.0.1
-* @author Leo Toikka
-*/
+ * Class Test_UG_Shortcode
+ *
+ * @package ug-tabs-chords
+ * @version  0.0.1
+ * @since 0.0.1
+ * @author Leo Toikka
+ */
 class Test_UG_Shortcode extends WP_UnitTestCase {
 
   /**
-  * Init test case.
-  */
+   * Init test case.
+   */
   public function test_ug_shortcode_init() {
-    $ug_shortcode = new UG_Shortcode;
+    $ug_shortcode = new UG_Shortcode();
     return $ug_shortcode;
   }
 
@@ -48,9 +48,9 @@ class Test_UG_Shortcode extends WP_UnitTestCase {
     // Test with valid values
     $test_values = array(
       'artist' => 'Crap Artist',
-      'type'   => 'ukulele'
+      'type'   => 'ukulele',
     );
-    $result = $instance->generate_shortcode( $test_values );
+    $result      = $instance->generate_shortcode( $test_values );
     $this->assertEquals( $result, '[ug-tabs-chords artist="' . $test_values['artist'] . '" type="' . $test_values['type'] . '"]' );
   }
 

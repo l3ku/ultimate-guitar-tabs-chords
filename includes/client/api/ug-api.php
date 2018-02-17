@@ -1,28 +1,30 @@
 <?php
 /**
-* Provide API to Ultimate Guitar content by scraping the HTML by using Html_Dom.
-*
-* @package ug-tabs-chords
-*/
+ * Provide API to Ultimate Guitar content by scraping the HTML by using Html_Dom.
+ *
+ * @package ug-tabs-chords
+ */
 
 namespace UGTC\Client\API;
 
-defined( 'ABSPATH' ) or die( 'Access Denied!' ); // Prevent direct access
+if ( ! defined( 'ABSPATH' ) ) {
+  die( 'Access Denied!' );
+}
 
-require_once( plugin_dir_path( __FILE__ ) . '../../../vendor/autoload.php' );
+require_once plugin_dir_path( __FILE__ ) . '../../../vendor/autoload.php';
 
 use \simplehtmldom_1_5\simple_html_dom as Html_Dom;
 
 if ( ! class_exists( 'UG_API' ) ) {
 
   /**
-  * Class UG_API
-  *
-  * @package ug-tabs-chords
-  * @version  0.0.1
-  * @since 0.0.1
-  * @author Leo Toikka
-  */
+   * Class UG_API
+   *
+   * @package ug-tabs-chords
+   * @version  0.0.1
+   * @since 0.0.1
+   * @author Leo Toikka
+   */
   class UG_API {
 
     /* Basic URL for Ultimate Guitar tabs archive */
@@ -36,7 +38,7 @@ if ( ! class_exists( 'UG_API' ) ) {
      */
     public function __construct() {
       $this->ug_tabs_archive_url = 'https://www.ultimate-guitar.com/tabs/';
-      $this->html_dom = new Html_Dom;
+      $this->html_dom            = new Html_Dom();
     }
 
     public function get_tabs_archive( $params, $limit ) {
@@ -47,6 +49,7 @@ if ( ! class_exists( 'UG_API' ) ) {
 
       // Don't continue if the html dom causes an error
       if ( false === @$this->html_dom->load_file( $query_string ) ) {
+        /* translators: %s: Ultimate Guitar tabs archive URL */
         error_log( sprintf( __( 'Ultimate-Guitar Tabs & Chords: could not establish connection to "%s"', 'ug-tabs-chords' ), $this->ug_tabs_archive_url ) );
         return array();
       }
@@ -54,14 +57,13 @@ if ( ! class_exists( 'UG_API' ) ) {
       // Find page numbering, find the largest page value to get all possible
       // results.
       $page_numbers_html = $this->html_dom->find( 'table tbody td b a.ys' );
-      $max_page_number = 1;
+      $max_page_number   = 1;
       if ( ! empty( $page_numbers_html ) ) {
-        foreach( $page_numbers_html as $page_number_html ) {
+        foreach ( $page_numbers_html as $page_number_html ) {
           $page_number_str = $page_number_html->plaintext;
 
           if ( ! empty( $page_number_str ) && is_numeric( $page_number_str )
-            && intval( $page_number_str ) > $max_page_number )
-          {
+            && intval( $page_number_str ) > $max_page_number ) {
             $max_page_number = intval( $page_number_str );
           }
         }
@@ -69,7 +71,7 @@ if ( ! class_exists( 'UG_API' ) ) {
 
       // Loop through all pages
       $ug_return_data = array();
-      $content_count = 0;
+      $content_count  = 0;
       for ( $page_number = 1; $page_number <= $max_page_number; $page_number++ ) {
         // Modify query string so it contains the current page number
         $query_string = preg_replace( '/[0-9]+.htm/', (string) $page_number . '.htm', $query_string );
@@ -103,16 +105,16 @@ if ( ! class_exists( 'UG_API' ) ) {
 
             $single_entry_rating_td = $result_row->find( 'td.tresults--rating span.rating', 0 );
             // Ratings are 0 if they don't exist
-            $single_entry_rating  = 0;
+            $single_entry_rating = 0;
             if ( ! empty( $single_entry_rating_td ) && isset( $single_entry_rating_td->title ) ) {
               $single_entry_rating = $single_entry_rating_td->title;
             }
 
             $result_row_array = array(
-              'name'    =>   $single_entry_name,
-              'type'    =>   $single_entry_type,
-              'link'    =>   $single_entry_link,
-              'rating'  =>   $single_entry_rating
+              'name'   => $single_entry_name,
+              'type'   => $single_entry_type,
+              'link'   => $single_entry_link,
+              'rating' => $single_entry_rating,
             );
 
             $ug_return_data[] = $result_row_array;
@@ -128,9 +130,9 @@ if ( ! class_exists( 'UG_API' ) ) {
 
       // Get the artist, trim whitespace, replace space with underscores and
       // transform to lowercase, e.g. "  Dream Theater" => "dream_theater".
-      $artist = $content_params['artist'];
+      $artist           = $content_params['artist'];
       $formatted_artist = strtolower( preg_replace( '/\s+/', '_', trim( $artist ) ) );
-      $query_string .= $formatted_artist;
+      $query_string    .= $formatted_artist;
 
       // Get content type. If content type is "all", it does not need to be
       // included in the query string.
@@ -145,10 +147,9 @@ if ( ! class_exists( 'UG_API' ) ) {
       // Check if sort method is set (not mandatory). Default is title_srt, so
       // only include the sort method if it is different
       if ( isset( $content_params['order'] ) && ! empty( $content_params['order'] )
-        && 'title_srt' !== strtolower( trim( $content_params['order'] ) ) )
-      {
+        && 'title_srt' !== strtolower( trim( $content_params['order'] ) ) ) {
         $sort_formatted = strtolower( trim( $content_params['order'] ) );
-        $query_string .= '?sort=' . $sort_formatted;
+        $query_string  .= '?sort=' . $sort_formatted;
       }
       error_log($query_string);
 

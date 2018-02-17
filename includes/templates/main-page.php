@@ -18,7 +18,9 @@ use UGTC\Cache\UG_Cache;
 use UGTC\Client;
 
 // Generate shortcode on form submission, sanitize input and disallow HTML
-if ( isset( $_POST['ugtc_generate_shortcode'] ) && wp_verify_nonce( 'ugtc_generate_shortcode' ) ) {
+if ( isset( $_POST['ugtc_generate_shortcode'] ) && isset( $_POST['_ugtc_nonce'] )
+  && wp_verify_nonce( $_POST['_ugtc_nonce'], 'ugtc_generate_shortcode' ) ) {
+
   $artist = trim( wp_kses( $_POST['ugtc_shortcode_artist'], array() ) );
   $type   = trim( wp_kses( $_POST['ugtc_shortcode_type'], array() ) );
   $order  = trim( wp_kses( $_POST['ugtc_shortcode_order'], array() ));
@@ -39,7 +41,8 @@ if ( isset( $_POST['ugtc_generate_shortcode'] ) && wp_verify_nonce( 'ugtc_genera
 
 <div class="wrap">
   <!-- Display purge cache success -->
-  <?php if ( isset( $_POST['ugtc_purge_cache'] ) && wp_verify_nonce( 'ugtc_purge_cache' ) ) : ?>
+  <?php if ( isset( $_POST['ugtc_purge_cache'] ) && isset( $_POST['_ugtc_nonce'] )
+    && wp_verify_nonce( $_POST['_ugtc_nonce'], 'ugtc_purge_cache' ) ) : ?>
     <?php UG_Cache::purge_cache(); ?>
     <div class="notice notice-success is-dismissible ugtc-success-msg">
       <?php esc_attr_e( 'Cache emptied successfully!', 'ug-tabs-chords' ); ?>
@@ -129,7 +132,7 @@ if ( isset( $_POST['ugtc_generate_shortcode'] ) && wp_verify_nonce( 'ugtc_genera
           <?php endif; ?>
         <?php endif; ?>
       </div>
-      <?php wp_nonce_field( 'ugtc_generate_shortcode' ); ?>
+      <?php wp_nonce_field( 'ugtc_generate_shortcode', '_ugtc_nonce' ); ?>
     </form>
   </div>
 
@@ -141,6 +144,6 @@ if ( isset( $_POST['ugtc_generate_shortcode'] ) && wp_verify_nonce( 'ugtc_genera
   </p>
   <form id="ugtc-purge-cache-form" method="POST" action="">
     <input type="submit" name="ugtc_purge_cache" class="button button-secondary" value="<?php esc_attr_e( 'Purge Cache', 'ug-tabs-chords' ); ?>">
-    <?php wp_nonce_field( 'ugtc_purge_cache' ); ?>
+    <?php wp_nonce_field( 'ugtc_purge_cache', '_ugtc_nonce' ); ?>
   </form>
 </div>

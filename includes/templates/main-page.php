@@ -41,8 +41,10 @@ if ( isset( $_POST['ugtc_generate_shortcode'] ) && isset( $_POST['_ugtc_nonce'] 
 
 <div class="wrap">
   <!-- Display purge cache success -->
-  <?php if ( isset( $_POST['ugtc_purge_cache'] ) && isset( $_POST['_ugtc_nonce'] )
-    && wp_verify_nonce( $_POST['_ugtc_nonce'], 'ugtc_purge_cache' ) ) : ?>
+  <?php
+  if ( isset( $_POST['ugtc_purge_cache'] ) && isset( $_POST['_ugtc_nonce'] )
+    && wp_verify_nonce( $_POST['_ugtc_nonce'], 'ugtc_purge_cache' ) ) :
+  ?>
     <?php UG_Cache::purge_cache(); ?>
     <div class="notice notice-success is-dismissible ugtc-success-msg">
       <?php esc_attr_e( 'Cache emptied successfully!', 'ug-tabs-chords' ); ?>

@@ -2,7 +2,7 @@
     "name": "l3ku/ultimate-guitar-tabs-chords",
     "description": "A WordPress plugin that fetches tabs and chords from Ultimate Guitar",
     "type": "wordpress-plugin",
-    "license": "GPLv3",
+    "license": "GPL-3.0+",
     "authors": [
         {
             "name": "Leo Toikka",
@@ -18,7 +18,7 @@
     ],
     "require": {
       "php": ">=5.3.2",
-      "sunra/php-simple-html-dom-parser": ">=1.5.2"
+      "sunra/php-simple-html-dom-parser": "~1.5.2"
     },
     "autoload": {
         "files": ["vendor/sunra/php-simple-html-dom-parser/Src/Sunra/PhpSimple/simplehtmldom_1_5/simple_html_dom.php"]

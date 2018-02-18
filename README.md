@@ -6,9 +6,6 @@
 
 A WordPress plugin that fetches tabs and chords from Ultimate Guitar by scraping HTML.
 
-<b>Note:</b> this plugin is currently not functioning properly, as Ultimate Guitar updated its website on Feb 05, 2018.
-I will fix this as soon as possible, but for now, the tab results are not correctly fetched.
-
 ## Installation
 
 This plugin is yet not available via the wordpress.org plugins directory. Installation is done by navigating to the WordPress plugins directory and cloning the plugin git repository by cloning this project from GitHub:

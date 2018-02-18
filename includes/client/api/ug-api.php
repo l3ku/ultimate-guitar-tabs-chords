@@ -39,6 +39,14 @@ if ( ! class_exists( 'UG_API' ) ) {
     public function __construct() {
       $this->ug_tabs_archive_url = 'https://www.ultimate-guitar.com/tabs/';
       $this->html_dom            = new Html_Dom();
+      $this->stream_context      = stream_context_create(
+        array(
+          'http' => array(
+            'method' => 'GET',
+            'header' => 'Cookie: back_to_classic_ug=1',
+          ),
+        )
+      );
     }
 
     public function get_tabs_archive( $params, $limit ) {
@@ -48,7 +56,7 @@ if ( ! class_exists( 'UG_API' ) ) {
       set_time_limit(60);
 
       // Don't continue if the html dom causes an error
-      if ( false === @$this->html_dom->load_file( $query_string ) ) {
+      if ( false === @$this->html_dom->load_file( $query_string, false, $this->stream_context ) ) {
         /* translators: %s: Ultimate Guitar tabs archive URL */
         error_log( sprintf( __( 'Ultimate-Guitar Tabs & Chords: could not establish connection to "%s"', 'ug-tabs-chords' ), $this->ug_tabs_archive_url ) );
         return array();
@@ -78,7 +86,7 @@ if ( ! class_exists( 'UG_API' ) ) {
 
         // Don't continue if the page was not found, but return the content
         // that was fetched before the error
-        if ( false === @$this->html_dom->load_file( $query_string ) ) {
+        if ( false === @$this->html_dom->load_file( $query_string, false, $this->stream_context ) ) {
           return $ug_return_data;
         }
 
@@ -151,7 +159,6 @@ if ( ! class_exists( 'UG_API' ) ) {
         $sort_formatted = strtolower( trim( $content_params['order'] ) );
         $query_string  .= '?sort=' . $sort_formatted;
       }
-      error_log($query_string);
 
       return $query_string;
     }

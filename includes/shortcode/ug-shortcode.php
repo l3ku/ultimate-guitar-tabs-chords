@@ -65,7 +65,7 @@ if ( ! class_exists( 'UG_Shortcode' ) ) {
       add_shortcode(
         self::$ug_shortcode_str,
         function( $atts = [], $content = null ) {
-          echo $this->create_shortcode( $atts, $content );
+          return $this->create_shortcode( $atts, $content );
         }
       );
     }

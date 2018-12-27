@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d6e29c93e12c51ccc2f52a32c610646c",
+    "content-hash": "76ce695376af1872d5c9809411880b05",
     "packages": [
         {
             "name": "sunra/php-simple-html-dom-parser",
@@ -62,7 +62,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.3.2"
+        "php": ">=7.0"
     },
     "platform-dev": []
 }

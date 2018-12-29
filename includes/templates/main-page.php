@@ -10,8 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once plugin_dir_path( __FILE__ ) . '../shortcode/ug-shortcode.php';
-require_once plugin_dir_path( __FILE__ ) . '../cache/ug-cache.php';
-require_once plugin_dir_path( __FILE__ ) . '../client/ug-client-values.php';
+require_once plugin_dir_path( __FILE__ ) . '../ug-cache.php';
+require_once plugin_dir_path( __FILE__ ) . '../ug-client-values.php';
 
 use UGTC\Shortcode\UG_Shortcode;
 use UGTC\Cache\UG_Cache;

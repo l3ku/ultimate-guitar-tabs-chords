@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once plugin_dir_path( __FILE__ ) . 'ug-client-values.php';
-require_once plugin_dir_path( __FILE__ ) . 'api/ug-api.php';
+require_once plugin_dir_path( __FILE__ ) . 'ug-api.php';
 
 use \WP_Error;
 

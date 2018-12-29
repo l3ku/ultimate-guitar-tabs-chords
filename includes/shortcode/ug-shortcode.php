@@ -13,8 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once plugin_dir_path( __FILE__ ) . 'ug-shortcode-base.php';
-require_once plugin_dir_path( __FILE__ ) . '../cache/ug-cache.php';
-require_once plugin_dir_path( __FILE__ ) . '../client/ug-client.php';
+require_once plugin_dir_path( __FILE__ ) . '../ug-cache.php';
+require_once plugin_dir_path( __FILE__ ) . '../ug-client.php';
 
 use \UGTC\Cache\UG_Cache;
 use \WP_Error;

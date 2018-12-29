@@ -75,6 +75,8 @@ if ( ! class_exists( 'UG_API' ) ) {
             'type'   => $tab->type,
             'link'   => $tab->tab_url,
             'rating' => $tab->rating,
+            'date'   => $tab->date,
+            'tuning' => $tab->tuning,
           );
         }
       }
@@ -96,6 +98,8 @@ if ( ! class_exists( 'UG_API' ) ) {
                 'type'   => $tab->type,
                 'link'   => $tab->tab_url,
                 'rating' => $tab->rating,
+                'date'   => $tab->date,
+                'tuning' => $tab->tuning,
               );
             }
           }

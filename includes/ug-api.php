@@ -109,7 +109,7 @@ if ( ! class_exists( 'UG_API' ) ) {
     }
 
 
-    private function get_ugapp_store_json($url) {
+    private function get_ugapp_store_json( $url ) {
       $html_dom = new Html_Dom();
 
       // Don't continue if the html dom causes an error
@@ -161,8 +161,7 @@ if ( ! class_exists( 'UG_API' ) ) {
       // Check if sort method is set (not mandatory). Default is title_srt, so
       // only include the sort method if it is different
       if ( isset($content_params['order']) && ! empty($content_params['order'])
-        && 'title_srt' !== strtolower(trim( $content_params['order'])) )
-      {
+        && 'title_srt' !== strtolower(trim( $content_params['order'])) ) {
         $sort_formatted = strtolower(trim($content_params['order']));
         $query_array['sort'] = $content_params['order'];
       }

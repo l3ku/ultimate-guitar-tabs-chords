@@ -16,8 +16,8 @@ class Test_UG_Client extends WP_UnitTestCase {
    * Init test case.
    */
   public function test_ug_client_init() {
-   $ug_client = new UG_Client();
-   return $ug_client;
+    $ug_client = new UG_Client();
+    return $ug_client;
   }
 
   /**

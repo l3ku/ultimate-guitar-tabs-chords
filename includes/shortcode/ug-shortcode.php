@@ -156,7 +156,7 @@ if ( ! class_exists( 'UG_Shortcode' ) ) {
       // Use only whitelisted values
       foreach ( $atts as $key => $val ) {
         if ( ! in_array( $key, self::$shortcode_whitelist, true ) ) {
-          unset( $atts[$key] );
+          unset( $atts[ $key ] );
         }
       }
 

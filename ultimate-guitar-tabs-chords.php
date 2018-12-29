@@ -32,6 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/shortcode/ug-shortcode.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/templates/main-page.php';
 
 if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
 
@@ -148,7 +149,7 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
      * @since 0.0.1
      */
     public function create_main_page() {
-      require_once plugin_dir_path( __FILE__ ) . 'includes/templates/main-page.php';
+      ugtc_render_main_page();
     }
   }
 

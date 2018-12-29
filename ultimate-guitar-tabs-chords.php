@@ -52,6 +52,12 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
     private $ug_shortcodes = array();
 
     /**
+     * Version of the plugin
+     * @var string
+     */
+    public static $plugin_version = '0.0.1';
+
+    /**
      * Initialize the plugin.
      *
      * @since 0.0.1
@@ -117,7 +123,7 @@ if ( ! class_exists( 'UG_Tabs_Chords' ) ) {
      * @since 0.0.1
      */
     public function enqueue_scripts() {
-      wp_enqueue_style( 'ug-tabs-chords', plugins_url( '/assets/css/ug-tabs-chords.css', __FILE__ ) );
+      wp_enqueue_style( 'ug-tabs-chords', plugins_url( '/assets/css/ug-tabs-chords.css', __FILE__ ), array(), self::$plugin_version );
     }
 
     /**

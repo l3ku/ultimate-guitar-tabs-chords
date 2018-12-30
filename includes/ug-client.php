@@ -11,7 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
   die( 'Access Denied!' );
 }
 
-require_once plugin_dir_path( __FILE__ ) . 'ug-client-values.php';
 require_once plugin_dir_path( __FILE__ ) . 'ug-api.php';
 
 use \WP_Error;
@@ -57,7 +56,7 @@ if ( ! class_exists( 'UG_Client' ) ) {
     public function set_default_params() {
       $this->artist  = 'Dream Theater'; // JP is god.
       $this->type    = 'tabs';
-      $this->ratings = array( 1, 2, 3, 4, 5 );
+      $this->ratings = self::get_valid_ratings();
       $this->order   = 'title_srt';
       $this->limit   = 1000;
     }
@@ -88,7 +87,7 @@ if ( ! class_exists( 'UG_Client' ) ) {
      * @return mixed True if the operation succeeded, or WP_ERROR object.
      */
     public function set_type( $type ) {
-      if ( ! in_array( $type, array_keys( ugtc_get_valid_types() ), true ) ) {
+      if ( ! in_array( $type, array_keys( self::get_valid_types() ), true ) ) {
         return new WP_Error( 'invalid_type_value', __( 'Invalid value supplied for content type', 'ug-tabs-chords' ) );
       }
       $this->type = $type;
@@ -105,6 +104,26 @@ if ( ! class_exists( 'UG_Client' ) ) {
     }
 
     /**
+     * Get valid content type values.
+     *
+     * @return array string Array with type valid slugs as keys, and name as values.
+     */
+    public static function get_valid_types() {
+      return array(
+        'tabs'       => __( 'Tabs', 'ug-tabs-chords' ),
+        'chords'     => __( 'Chords', 'ug-tabs-chords' ),
+        'guitar_pro' => __( 'Guitar Pro', 'ug-tabs-chords' ),
+        'power'      => __( 'Power', 'ug-tabs-chords' ),
+        'bass'       => __( 'Bass', 'ug-tabs-chords' ),
+        'drums'      => __( 'Drums', 'ug-tabs-chords' ),
+        'ukulele'    => __( 'Ukulele', 'ug-tabs-chords' ),
+        'official'   => __( 'Official', 'ug-tabs-chords' ),
+        'video'      => __( 'Video', 'ug-tabs-chords' ),
+        'all'        => __( 'All', 'ug-tabs-chords' ),
+      );
+    }
+
+    /**
      * Set the order for the retreived search results.
      *
      * @param string $order The order to set.
@@ -114,7 +133,7 @@ if ( ! class_exists( 'UG_Client' ) ) {
      * @return mixed True if the operation succeeded, or WP_ERROR object.
      */
     public function set_order( $order ) {
-      if ( ! in_array( $order, array_keys( ugtc_get_valid_orders() ), true ) ) {
+      if ( ! in_array( $order, array_keys( self::get_valid_orders() ), true ) ) {
         return new WP_Error( 'invalid_order_value', __( 'Invalid value supplied for order search parameter', 'ug-tabs-chords' ) );
       }
       $this->order = $order;
@@ -131,12 +150,23 @@ if ( ! class_exists( 'UG_Client' ) ) {
     }
 
     /**
+     * Get valid order values.
+     * @return array string Array with order valid slug as key, and name as value.
+     */
+    public static function get_valid_orders() {
+      return array(
+        'title_srt' => __( 'Title ABC', 'ug-tabs-chords' ),
+        'date'      => __( 'Date', 'ug-tabs-chords' ),
+      );
+    }
+
+    /**
      * Set the allowed ratings for the search.
      *
      * @param array $ratings The rating values (1-5) to set.
      */
     public function set_allowed_ratings( $ratings ) {
-      if ( array_intersect( $ratings, ugtc_get_valid_ratings() ) !== $ratings ) {
+      if ( array_intersect( $ratings, self::get_valid_ratings() ) !== $ratings ) {
         return new WP_Error( 'invalid_rating_value', __( 'Invalid value supplied for ratings search parameter', 'ug-tabs-chords' ) );
       }
       $this->ratings = $ratings;
@@ -150,6 +180,15 @@ if ( ! class_exists( 'UG_Client' ) ) {
      */
     public function get_allowed_ratings() {
       return $this->ratings;
+    }
+
+    /**
+     * Get valid rating values (1-5).
+     *
+     * @return array int Valid rating values
+     */
+    public static function get_valid_ratings() {
+      return array( 1, 2, 3, 4, 5 );
     }
 
     /**

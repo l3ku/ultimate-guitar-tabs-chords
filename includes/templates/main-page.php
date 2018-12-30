@@ -11,11 +11,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once plugin_dir_path( __FILE__ ) . '../shortcode/ug-shortcode.php';
 require_once plugin_dir_path( __FILE__ ) . '../ug-cache.php';
-require_once plugin_dir_path( __FILE__ ) . '../ug-client-values.php';
+require_once plugin_dir_path( __FILE__ ) . '../ug-client.php';
 
 use UGTC\Shortcode\UG_Shortcode;
 use UGTC\Cache\UG_Cache;
-use UGTC\Client;
+use UGTC\Client\UG_Client;
 
 function ugtc_render_main_page() {
   // Generate shortcode on form submission, sanitize input and disallow HTML
@@ -83,7 +83,7 @@ function ugtc_render_main_page() {
             </th>
             <td>
               <select name="ugtc_shortcode_type">
-                <?php $valid_type_values = Client\ugtc_get_valid_types(); ?>
+                <?php $valid_type_values = UG_Client::get_valid_types(); ?>
                 <?php foreach ( $valid_type_values as $key => $val ) : ?>
                   <option value="<?php echo esc_attr( $key ); ?>"><?php echo esc_attr( $val ); ?>
                 <?php endforeach; ?>
@@ -96,7 +96,7 @@ function ugtc_render_main_page() {
             </th>
             <td>
               <select name="ugtc_shortcode_order">
-                <?php $valid_order_values = Client\ugtc_get_valid_orders(); ?>
+                <?php $valid_order_values = UG_Client::get_valid_orders(); ?>
                 <?php foreach ( $valid_order_values as $key => $val ) : ?>
                   <option value="<?php echo esc_attr( $key ); ?>"><?php echo esc_attr( $val ); ?>
                 <?php endforeach; ?>

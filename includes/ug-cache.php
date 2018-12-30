@@ -1,7 +1,7 @@
 <?php
 /**
- * File for caching the data retreived by UG_Client from Ultimate Guitar. Caching
- * is done to minimize requests to external sites and improve load times.
+ * File for caching the data retreived by UG_Client from Ultimate Guitar / UG_DB. Caching
+ * is done to minimize requests to the database and thus improve site load times.
  *
  * @package ug-tabs-chords
  */

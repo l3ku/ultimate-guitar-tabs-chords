@@ -168,7 +168,7 @@ if ( ! class_exists( 'UG_Shortcode' ) ) {
 
         // Only add to cache if any data is retreived
         if ( ! empty( $results ) ) {
-          UG_Cache::add_to_cache( $atts, $results );
+          //UG_Cache::add_to_cache( $atts, $results );
         }
       }
 

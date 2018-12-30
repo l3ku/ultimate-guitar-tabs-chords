@@ -5,7 +5,7 @@
  * @package ug-tabs-chords
  */
 
-namespace UGTC\Client\API;
+namespace UGTC\API;
 
 if ( ! defined( 'ABSPATH' ) ) {
   die( 'Access Denied!' );
@@ -35,7 +35,7 @@ if ( ! class_exists( 'UG_API' ) ) {
     }
 
 
-    public function get_tabs_archive( $params, $limit ) {
+    public function get_tabs_archive( $params ) {
       // Due to the nature of the Ultimate Guitar website having the tabs and chords of an artist
       // listed on an URL with the artist name suffixed with a random string (e.g. dream_theater_123123),
       // we can not know this for all possible artists beforehand. Thus, we must do a search for the

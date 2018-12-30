@@ -12,8 +12,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once plugin_dir_path( __FILE__ ) . 'ug-api.php';
+require_once plugin_dir_path( __FILE__ ) . 'ug-cache.php';
+require_once plugin_dir_path( __FILE__ ) . 'ug-db.php';
 
 use \WP_Error;
+use \UGTC\DB\UG_DB;
+use \UGTC\API\UG_API;
+use \UGTC\Cache\UG_Cache;
 
 if ( ! class_exists( 'UG_Client' ) ) {
 
@@ -30,6 +35,9 @@ if ( ! class_exists( 'UG_Client' ) ) {
     /* UG_API provides an interface to ultimate-guitar.com */
     private $ug_api;
 
+    /* UG_DB provides an interface to the local database. */
+    private $ug_db;
+
     /* Content specifiers */
     private $artist;
     private $limit;
@@ -43,7 +51,8 @@ if ( ! class_exists( 'UG_Client' ) ) {
      * @since 0.0.1
      */
     public function __construct() {
-      $this->ug_api = new API\UG_API();
+      $this->ug_api = new UG_API();
+      $this->ug_db = new UG_DB();
       $this->set_default_params(); // Set defaults
     }
 
@@ -205,7 +214,33 @@ if ( ! class_exists( 'UG_Client' ) ) {
         'rating' => $this->ratings,
       );
 
-      return $this->ug_api->get_tabs_archive( $content_params, $this->limit );
+      // Try to fetch from our cache first
+      $cache_result = UG_Cache::get_cached($content_params);
+      if ( $cache_result && ! empty( $cache_result) ) {
+        return $cache_result;
+      }
+
+      // If the cache was missed, attempt to get the content from the local database
+      $db_result = $this->ug_db->get_artist_entries($this->artist, $this->type, $this->order, $this->ratings);
+      if ( ! empty($db_result) ) {
+        return $db_result;
+      }
+
+      // Finally, resort to the www.ultimate-guitar.com API class that will scrape HTML to retreive
+      // the tabs.
+      $api_result = $this->ug_api->get_tabs_archive( $content_params );
+      if ( empty($api_result) ) {
+        throw New Exception(__('Could not find any entries for the provided artist.', 'ug-tabs-chords'));
+      }
+
+      // Add the content to the local databse and cache it
+      $added_to_db = $this->ug_db->add_entries($api_result);
+      if ( ! $added_to_db ) {
+        throw new Execption(__('Could not save artist entries to local database. Please check that the WordPress database is up and running...', 'ug-tabs-chords'));
+      }
+
+      $added_to_cache = UG_Cache::add_to_cache($api_result);
+      return $api_result;
     }
   }
 }

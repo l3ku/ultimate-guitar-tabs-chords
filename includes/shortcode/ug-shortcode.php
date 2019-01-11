@@ -8,6 +8,8 @@
 
 namespace UGTC\Shortcode;
 
+use \Exception;
+
 if ( ! defined( 'ABSPATH' ) ) {
   die( 'Access Denied!' );
 }

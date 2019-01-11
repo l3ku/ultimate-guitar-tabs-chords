@@ -7,6 +7,8 @@
 
 namespace UGTC\Client\API;
 
+use \Exception;
+
 if ( ! defined( 'ABSPATH' ) ) {
   die( 'Access Denied!' );
 }

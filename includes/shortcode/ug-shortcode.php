@@ -164,7 +164,14 @@ if ( ! class_exists( 'UG_Shortcode' ) ) {
       $results = UG_Cache::get_cached( $atts );
       if ( false === $results ) {
         $this->set_client_settings( $atts );
-        $results = $this->ug_client->get_content();
+
+        // Catch any exceptions caused by the client
+        try {
+          $results = $this->ug_client->get_content();
+
+        } catch ( Exception $e ) {
+          return $e->getMessage();
+        }
 
         // Only add to cache if any data is retreived
         if ( ! empty( $results ) ) {
